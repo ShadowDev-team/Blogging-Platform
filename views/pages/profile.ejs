@@ -52,7 +52,7 @@
                       </button>
                       
                     <div class="card-body text-center">
-                        <img src="profile-picture.jpg" alt="Profile Picture"
+                        <img src="/uploads/<%= user.profilePicture %>" alt="Profile Picture"
                             class="rounded-circle mb-3 profile-picture" />
                         <h1 class="display-4 mb-2"><%= user.username %></h1>
                         <p class="lead mb-4">Software Engineer, Blogger, and Traveler</p>
@@ -63,11 +63,7 @@
                         </div>
                         <div class="about-section">
                             <h3 class="mb-3">About Me</h3>
-                            <p>
-                                I am a software engineer with a passion for technology and
-                                travel. In my free time, I enjoy writing about my experiences
-                                and sharing them with others.
-                            </p>
+                            <p><%= user.bio || "Add your bio" %></p>
                         </div>
                         <div class="row">
                             <div class="col-4 stat-item">
@@ -146,7 +142,7 @@
         </div>
     </div>
 
-    <!-- Edit Profile Modal -->
+    <!--Start Edit Profile Modal -->
     <div class="modal fade" id="editProfileModal" tabindex="-1" aria-labelledby="editProfileModalLabel"
         aria-hidden="true">
         <div class="modal-dialog">
@@ -156,20 +152,20 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <form>
+                    <form enctype="multipart/form-data">
                         <div class="mb-3">
                             <label for="profilePictureInput" class="form-label">Profile Picture</label>
-                            <input type="file" class="form-control" id="profilePictureInput" />
+                            <input type="file" class="form-control" id="profilePicture" />
                         </div>
 
                         <div class="mb-3">
                             <label for="nameInput" class="form-label">Name</label>
-                            <input type="text" class="form-control" id="nameInput" value="John Doe" />
+                            <input type="text" class="form-control" id="nameInput" value="<%= user.username %>" />
                         </div>
 
                         <div class="mb-3">
                             <label for="emailInput" class="form-label">Email</label>
-                            <input type="email" class="form-control" id="emailInput" value="john.doe@example.com" />
+                            <input type="email" class="form-control" id="emailInput" value="<%= user.email %>" />
                         </div>
 
                         <div class="mb-3">
@@ -179,7 +175,7 @@
 
                         <div class="mb-3">
                             <label for="bioInput" class="form-label">Bio</label>
-                            <textarea class="form-control" id="bioInput" rows="3">I am a software engineer with a passion for technology and travel. In my free time, I enjoy writing about my experiences and sharing them with others.</textarea>
+                            <textarea class="form-control" id="bioInput" rows="3"><%= user.bio></textarea>
                         </div>
 
                         
@@ -196,38 +192,44 @@
             </div>
         </div>
     </div>
+    <!--End of Edit Profile Modal-->
 
     <!-- Bootstrap 5 JavaScript -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
 
     <script>
+        async function updateProfile() {
+            console.log("clicked");
+    
+            const profileData = new FormData();
+            
+            const profilePicture = document.getElementById("profilePicture").files[0];
 
-        // Initialize the modal
-        // const editProfileModal = document.getElementById('editProfileModal');
-        // const editProfileModalInstance = new bootstrap.Modal(editProfileModal);
-
-
+            profileData.append("username",document.getElementById("nameInput").value);
+            profileData.append("email",document.getElementById("emailInput").value);
+            profileData.append("password",document.getElementById("passwordInput").value);
+            profileData.append("bio",document.getElementById("bioInput").value);
+            if(profilePicture){
+            profileData.append("profilePicture",profilePicture);
+            }
         
-            // Get the updated values from the form
-            // const profilePicture = document.getElementById('profilePictureInput').files[0];
-            // const name = document.getElementById('nameInput').value;
-            // const email = document.getElementById('emailInput').value;
-            // const bio = document.getElementById('bioInput').value;
-            // const password = document.getElementById('passwordInput').value;
-
-            // Update the user's profile information
-            // document.getElementById('profilePicture').src = URL.createObjectURL(profilePicture);
-            // document.getElementById('userName').textContent = name;
-            // document.getElementById('userBio').textContent = bio;
-            // document.getElementById('userAbout').textContent = bio;
-
-            // Perform any additional logic to save the updated profile information
-            // console.log('Profile updated:', { profilePicture, name, email, bio, password });
-
-            // Close the modal
-            // const modal = document.getElementById('editProfileModal');
-            // const modalInstance = bootstrap.Modal.getInstance(modal);
-            // modalInstance.hide();
-        
+            try {
+                const response = await fetch("/profile", {
+                    method: "PUT",
+                    body: profileData,
+                });
+    
+                if (response.ok) {               
+                    location.reload();                
+                } else {
+                    const errorText = await response.text(); 
+                    console.log("Error updating profile:", errorText);
+                   
+                }
+            } catch (error) {
+                console.error("Fetch error:", error);                
+                 }
+             }
     </script>
+    
 </body>

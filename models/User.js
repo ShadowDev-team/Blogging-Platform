@@ -41,6 +41,14 @@
                 type: DataTypes.STRING(20),
                 allowNull: false,
             },
+            profilePicture:{
+                type: DataTypes.STRING(200),
+                allowNull: true,
+            },
+            bio:{
+                type: DataTypes.TEXT,
+                allowNull: true,
+            },
         }, {
             sequelize,
             modelName: 'User',
