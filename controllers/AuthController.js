@@ -86,6 +86,14 @@ class AuthController {
 
     async resetPassword(req, res) {
     }
+
+    async me(req, res) {
+        if (req.session.user) {
+            res.json({ message: "user is logged in" });
+        } else {
+            res.status(401).json({ message: 'Unauthorized' });
+        }
+    }
 }
 
 module.exports = new AuthController();

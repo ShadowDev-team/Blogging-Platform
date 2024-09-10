@@ -1,5 +1,9 @@
 'use strict';
 
+(async () => {
+    if (await isUserLoggedIn()) window.location.replace('/');
+})();
+
 const alertContainer = document.getElementById('alert');
 
 async function handleFormSubmit(e, formType) {
@@ -46,4 +50,9 @@ function showAlert(msg, type) {
     const alert = alertContainer.querySelector('.alert');
     alert.querySelector("span").textContent = msg;
     alert.classList.remove('fade');
+}
+
+async function isUserLoggedIn() {
+    const response = await fetch('/api/users/me');
+    return response.status === 200;
 }
