@@ -9,4 +9,10 @@ function check(password, hash) {
     return bcrypt.compare(password, hash);
 }
 
-module.exports = { hash, check };
+async function generateResetToken() {
+    const currTime = new Date().getTime();
+    const salt = await bcrypt.genSalt(10);
+    return `${currTime}-${salt}`;
+}
+
+module.exports = { hash, check, generateResetToken };

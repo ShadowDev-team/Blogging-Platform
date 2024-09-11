@@ -56,3 +56,46 @@ async function isUserLoggedIn() {
     const response = await fetch('/api/users/me');
     return response.status === 200;
 }
+
+async function resetPassword(e) {
+    e.preventDefault();
+    const email = document.getElementById('email').value.trim();
+    if (!email) {
+        showAlert('Email is required', 'danger');
+        return;
+    }
+
+    const res = await fetch(`/api/users/reset-password?email=${email}`)
+    const result = await res.json();
+    if (res.status === 200) showAlert(result.message, 'success');
+    else showAlert(result.message || result.error, 'danger');
+}
+
+async function handleNewPassword(e) {
+    e.preventDefault();
+    const password = document.getElementById('password').value.trim();
+    const confirmPassword = document.getElementById('confirmPassword').value.trim();
+    const token = new URLSearchParams(window.location.search).get('token');
+    if (password !== confirmPassword) {
+        showAlert('Passwords do not match', 'danger');
+        return;
+    }
+    if (!token) {
+        showAlert('Invalid token', 'danger');
+        return;
+    }
+    const res = await fetch(`/api/users/reset-password/confirm?token=${token}`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({password})
+    });
+    const result = await res.json();
+    if (res.status === 200) {
+        showAlert(result.message, 'success');
+        setTimeout(() => window.location.replace('/login'), 2000);
+    } else {
+        showAlert(result.message || result.error, 'danger');
+    }
+}

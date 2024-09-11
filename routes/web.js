@@ -12,6 +12,7 @@ router.get('/register', (req, res) => {
 router.get('/reset-password', (req, res) => {
     res.render('pages/auth/reset-password', { layout: false });
 })
+router.get('/reset-password/verify', authenticate.checkResetToken)
 router.get('/logout', authenticate.logout)
 
 module.exports = router;
