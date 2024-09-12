@@ -38,11 +38,11 @@
                 allowNull: false,
             },
             password: {
-                type: DataTypes.STRING(20),
+                type: DataTypes.STRING(100),
                 allowNull: false,
             },
             profilePicture:{
-                type: DataTypes.STRING(200),
+                type: DataTypes.STRING,
                 allowNull: true,
             },
             bio:{

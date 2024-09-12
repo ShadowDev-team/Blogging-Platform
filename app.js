@@ -8,10 +8,6 @@ const apiRoutes = require('./routes/api');
 const webRoutes = require('./routes/web');
 
 
-
-
-
-
 const app = express();
 app.set('view engine', 'ejs');
 

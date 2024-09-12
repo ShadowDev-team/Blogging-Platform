@@ -98,8 +98,7 @@
     </div>
 
     <!--Start Edit Profile Modal -->
-    <div class="modal fade" id="editProfileModal" tabindex="-1" aria-labelledby="editProfileModalLabel"
-        aria-hidden="true">
+    <div class="modal fade" id="editProfileModal" tabindex="-1" aria-labelledby="editProfileModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
@@ -107,34 +106,41 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
+                   
+                    <div id="errorContainer" class="alert alert-danger d-none" role="alert">
+                        
+                    </div>
+                    
                     <form enctype="multipart/form-data">
                         <div class="mb-3">
                             <label for="profilePictureInput" class="form-label">Profile Picture</label>
                             <input type="file" class="form-control" id="profilePicture" />
                         </div>
-
+    
                         <div class="mb-3">
                             <label for="nameInput" class="form-label">Name</label>
                             <input type="text" class="form-control" id="nameInput" value="<%= user.username %>" />
                         </div>
-
+    
                         <div class="mb-3">
                             <label for="emailInput" class="form-label">Email</label>
                             <input type="email" class="form-control" id="emailInput" value="<%= user.email %>" />
                         </div>
-
+    
                         <div class="mb-3">
                             <label for="passwordInput" class="form-label">Password</label>
                             <input type="password" class="form-control" id="passwordInput" />
                         </div>
-
-
+    
+                        <div class="mb-3">
+                            <label for="confirmPasswordInput" class="form-label">Confirm New Password</label>
+                            <input type="password" class="form-control" id="confirmPasswordInput" placeholder="Confirm new password" />
+                        </div>
+    
                         <div class="mb-3">
                             <label for="bioInput" class="form-label">Bio</label>
                             <textarea class="form-control" id="bioInput" rows="3"><%= user.bio %></textarea>
                         </div>
-
-                        
                     </form>
                 </div>
                 <div class="modal-footer">
@@ -160,31 +166,64 @@
             const profileData = new FormData();
             
             const profilePicture = document.getElementById("profilePicture").files[0];
+            const passwordInput = document.getElementById("passwordInput");
+            const confirmPasswordInput = document.getElementById("confirmPasswordInput");
 
             profileData.append("username",document.getElementById("nameInput").value);
             profileData.append("email",document.getElementById("emailInput").value);
-            profileData.append("password",document.getElementById("passwordInput").value);
+            profileData.append("password",passwordInput.value);
             profileData.append("bio",document.getElementById("bioInput").value);
             if(profilePicture){
             profileData.append("profilePicture",profilePicture);
             }
+            profileData.append("confirmpassword",confirmPasswordInput.value);
         
+            if (!validation()) {
+            return;
+            }
+
             try {
                 const response = await fetch("/profile", {
                     method: "PUT",
                     body: profileData,
                 });
-    
+
+                const result = await response.json();
+                console.log(response);
                 if (response.ok) {               
-                    location.reload();                
+                    location.reload();  
+                    console.log("qqqqqqqqqqqqqq");              
                 } else {
-                    const errorText = await response.text(); 
-                    console.log("Error updating profile:", errorText);
-                   
+                    manageError(result.error);
                 }
             } catch (error) {
                 console.error("Fetch error:", error);                
                  }
+             }
+
+        function validation() {
+
+        
+        errorContainer.classList.add('d-none');
+        passwordInput.style.borderColor = "";
+        confirmPasswordInput.style.borderColor = "";
+
+        if (passwordInput.value || confirmPasswordInput.value) {
+            if (passwordInput.value !== confirmPasswordInput.value) {
+                manageError("Passwords do not match.");
+                return false; 
+            }
+        }
+        return true;
+    }
+
+             function manageError(message){
+                    const errorContainer = document.getElementById("errorContainer");
+                    errorContainer.classList.remove('d-none');
+                    errorContainer.textContent = message;
+                    errorContainer.scrollIntoView();
+                    passwordInput.style.borderColor = "red";
+                    confirmPasswordInput.style.borderColor = "red";
              }
     </script>
     

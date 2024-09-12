@@ -1,4 +1,5 @@
 const { User } = require("../models");
+const bcrypt = require('bcrypt');
 
 //method to display profile
 
@@ -28,7 +29,7 @@ exports.updateUserProfile = async (req, res) => {
     try {
 
       const userId = req.id;
-      const { username, email, password, bio} = req.body;
+      const { username, email, password, bio,confirmpassword} = req.body;
 
       const user = await User.findByPk(userId);
 
@@ -39,15 +40,23 @@ exports.updateUserProfile = async (req, res) => {
       user.username = username || user.username;
       user.email = email || user.email;
       user.bio = bio || user.bio;
-      if (password) {
-        user.password = await bcrypt.hash(password, 10);
+      
+      console.log("password",password);
+      console.log("confirmpassword",confirmpassword);
+      if (password || confirmpassword) {
+
+        if(password !== confirmpassword){
+          return res.status(400).json({error:"passwords should match"});
+        }
+        user.password = await bcrypt.hash(password, 1);
       }
+
       if(req.file){
         user.profilePicture = req.file.filename;
       }
       await user.save();
 
-      return res.status(200).send("Profile updated successfully");
+      return res.status(200).json({ message: "Profile updated successfully" });
 
     } catch(error) {
       console.error("Error updating profile:", error);
