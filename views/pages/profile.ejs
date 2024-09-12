@@ -1,0 +1,230 @@
+    <div class="container my-5">
+        <div class="row">
+            <div class="col-md-8">
+                <div class="card mb-4 position-relative">
+                    <button type="button" class="btn btn-dark profile-edit-button" data-bs-toggle="modal" data-bs-target="#editProfileModal">
+                        <i class="fas fa-edit"></i>
+                      </button>
+                      
+                    <div class="card-body text-center">
+                        <img src="/uploads/<%= user.profilePicture %>" alt="Profile Picture"
+                            class="rounded-circle mb-3 profile-picture" />
+                        <h1 class="display-4 mb-2"><%= user.username %></h1>
+                        <p class="lead mb-4">Software Engineer, Blogger, and Traveler</p>
+                        <div class="d-flex justify-content-center mb-4">
+                            <a href="#" class="btn btn-dark"><i class="fab fa-twitter"></i></a>
+                            <a href="#" class="btn btn-dark mx-4"><i class="fab fa-instagram"></i></a>
+                            <a href="#" class="btn btn-dark"><i class="fab fa-linkedin"></i></a>
+                        </div>
+                        <div class="profile-about-section">
+                            <h3 class="mb-3">About Me</h3>
+                            <p><%= user.bio || "Here's where you can share more about yourself: your history, work experience, accomplishments, interests, dreams, and more. You can even add images and use rich text to personalize your bio." %></p>
+                        </div>
+                        <div class="row">
+                            <div class="col-4 profile-stat-item">
+                                <h4 class="mb-1">28</h4>
+                                <p class="mb-0">Posts</p>
+                            </div>
+                            <div class="col-4 profile-stat-item">
+                                <h4 class="mb-1">1.2K</h4>
+                                <p class="mb-0">Followers</p>
+                            </div>
+                            <div class="col-4 profile-stat-item">
+                                <h4 class="mb-1">354</h4>
+                                <p class="mb-0">Following</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card mb-4">
+                    <div class="card-header">Related Posts</div>
+                    <div class="card-body">
+                        <div class="media mb-3">
+                            <img src="post-thumbnail-1.jpg" class="mr-3 profile-media-object" alt="Post Thumbnail" />
+                            <div class="media-body">
+                                <h5 class="mt-0">Blog Post Title 1</h5>
+                                <p>A brief description of the blog post.</p>
+                            </div>
+                        </div>
+                        <div class="media mb-3">
+                            <img src="post-thumbnail-2.jpg" class="mr-3 profile-media-object" alt="Post Thumbnail" />
+                            <div class="media-body">
+                                <h5 class="mt-0">Blog Post Title 2</h5>
+                                <p>A brief description of the blog post.</p>
+                            </div>
+                        </div>
+                        <div class="media mb-3">
+                            <img src="post-thumbnail-3.jpg" class="mr-3 profile-media-object" alt="Post Thumbnail" />
+                            <div class="media-body">
+                                <h5 class="mt-0">Blog Post Title 3</h5>
+                                <p>A brief description of the blog post.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card mb-4">
+                    <div class="card-header">Activity</div>
+                    <div class="card-body">
+                        <div class="media mb-3">
+                            <img src="activity-thumbnail-1.jpg" class="mr-3 profile-media-object" alt="Activity Thumbnail" />
+                            <div class="media-body">
+                                <h5 class="mt-0">Recent Activity</h5>
+                                <p>John Doe commented on a post.</p>
+                                <small class="text-muted">2 hours ago</small>
+                            </div>
+                        </div>
+                        <div class="media mb-3">
+                            <img src="activity-thumbnail-2.jpg" class="mr-3 profile-media-object" alt="Activity Thumbnail" />
+                            <div class="media-body">
+                                <h5 class="mt-0">Recent Activity</h5>
+                                <p>John Doe liked a post.</p>
+                                <small class="text-muted">4 hours ago</small>
+                            </div>
+                        </div>
+                        <div class="media mb-3">
+                            <img src="activity-thumbnail-3.jpg" class="mr-3 profile-media-object" alt="Activity Thumbnail" />
+                            <div class="media-body">
+                                <h5 class="mt-0">Recent Activity</h5>
+                                <p>John Doe started following a new user.</p>
+                                <small class="text-muted">8 hours ago</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!--Start Edit Profile Modal -->
+    <div class="modal fade" id="editProfileModal" tabindex="-1" aria-labelledby="editProfileModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="editProfileModalLabel">Edit Profile</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                   
+                    <div id="errorContainer" class="alert alert-danger d-none" role="alert">
+                        
+                    </div>
+                    
+                    <form enctype="multipart/form-data">
+                        <div class="mb-3">
+                            <label for="profilePictureInput" class="form-label">Profile Picture</label>
+                            <input type="file" class="form-control" id="profilePicture" />
+                        </div>
+    
+                        <div class="mb-3">
+                            <label for="nameInput" class="form-label">Name</label>
+                            <input type="text" class="form-control" id="nameInput" value="<%= user.username %>" />
+                        </div>
+    
+                        <div class="mb-3">
+                            <label for="emailInput" class="form-label">Email</label>
+                            <input type="email" class="form-control" id="emailInput" value="<%= user.email %>" />
+                        </div>
+    
+                        <div class="mb-3">
+                            <label for="passwordInput" class="form-label">Password</label>
+                            <input type="password" class="form-control" id="passwordInput" />
+                        </div>
+    
+                        <div class="mb-3">
+                            <label for="confirmPasswordInput" class="form-label">Confirm New Password</label>
+                            <input type="password" class="form-control" id="confirmPasswordInput" placeholder="Confirm new password" />
+                        </div>
+    
+                        <div class="mb-3">
+                            <label for="bioInput" class="form-label">Bio</label>
+                            <textarea class="form-control" id="bioInput" rows="3"><%= user.bio %></textarea>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                        Close
+                    </button>
+                    <button type="button" class="btn btn-dark" onclick="updateProfile()">
+                        Save Changes
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--End of Edit Profile Modal-->
+
+    <!-- Bootstrap 5 JavaScript -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+        async function updateProfile() {
+            console.log("clicked");
+    
+            const profileData = new FormData();
+            
+            const profilePicture = document.getElementById("profilePicture").files[0];
+            const passwordInput = document.getElementById("passwordInput");
+            const confirmPasswordInput = document.getElementById("confirmPasswordInput");
+
+            profileData.append("username",document.getElementById("nameInput").value);
+            profileData.append("email",document.getElementById("emailInput").value);
+            profileData.append("password",passwordInput.value);
+            profileData.append("bio",document.getElementById("bioInput").value);
+            if(profilePicture){
+            profileData.append("profilePicture",profilePicture);
+            }
+            profileData.append("confirmpassword",confirmPasswordInput.value);
+        
+            if (!validation()) {
+            return;
+            }
+
+            try {
+                const response = await fetch("/profile", {
+                    method: "PUT",
+                    body: profileData,
+                });
+
+                const result = await response.json();
+                console.log(response);
+                if (response.ok) {               
+                    location.reload();  
+                    console.log("qqqqqqqqqqqqqq");              
+                } else {
+                    manageError(result.error);
+                }
+            } catch (error) {
+                console.error("Fetch error:", error);                
+                 }
+             }
+
+        function validation() {
+
+        
+        errorContainer.classList.add('d-none');
+        passwordInput.style.borderColor = "";
+        confirmPasswordInput.style.borderColor = "";
+
+        if (passwordInput.value || confirmPasswordInput.value) {
+            if (passwordInput.value !== confirmPasswordInput.value) {
+                manageError("Passwords do not match.");
+                return false; 
+            }
+        }
+        return true;
+    }
+
+             function manageError(message){
+                    const errorContainer = document.getElementById("errorContainer");
+                    errorContainer.classList.remove('d-none');
+                    errorContainer.textContent = message;
+                    errorContainer.scrollIntoView();
+                    passwordInput.style.borderColor = "red";
+                    confirmPasswordInput.style.borderColor = "red";
+             }
+    </script>
+    
+
