@@ -4,12 +4,14 @@ const session = require('express-session');
 require("dotenv").config();
 require("./config/database");
 
+
 const apiRoutes = require('./routes/api');
 const webRoutes = require('./routes/web');
 
 
 const app = express();
 app.set('view engine', 'ejs');
+
 
 // middlewares
 app.use(session({
@@ -20,7 +22,10 @@ app.use(session({
 app.use(express.json());
 app.use(expressLayouts);
 app.use(express.static('public'));
+app.use('/uploads', express.static('uploads'));
 app.use("/api", apiRoutes);
 app.use("/", webRoutes);
+
+
 
 module.exports = app;

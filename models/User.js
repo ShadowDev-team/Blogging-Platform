@@ -41,9 +41,13 @@ module.exports = (sequelize, DataTypes) => {
             type: DataTypes.STRING(100),
             allowNull: false,
         },
-        token: {
-            type: DataTypes.STRING(100),
-            unique: true,
+        profilePicture:{
+            type: DataTypes.STRING,
+            allowNull: true,
+        },
+        bio:{
+            type: DataTypes.TEXT,
+            allowNull: true,
         },
     }, {
         sequelize,
