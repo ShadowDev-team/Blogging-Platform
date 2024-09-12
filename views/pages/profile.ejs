@@ -41,27 +41,24 @@
                 <div class="card mb-4">
                     <div class="card-header">Related Posts</div>
                     <div class="card-body">
+                        <% if(articles.length > 0) { %>
+                        <% articles.forEach(article => { %>
                         <div class="media mb-3">
                             <img src="post-thumbnail-1.jpg" class="mr-3 profile-media-object" alt="Post Thumbnail" />
                             <div class="media-body">
-                                <h5 class="mt-0">Blog Post Title 1</h5>
+                                <h5 class="mt-0"><% article.title %></h5>
                                 <p>A brief description of the blog post.</p>
                             </div>
                         </div>
-                        <div class="media mb-3">
-                            <img src="post-thumbnail-2.jpg" class="mr-3 profile-media-object" alt="Post Thumbnail" />
-                            <div class="media-body">
-                                <h5 class="mt-0">Blog Post Title 2</h5>
-                                <p>A brief description of the blog post.</p>
+                        <% });%>
+                        <% } else{%>
+                            <div class="media mb-3">
+                                <div class="media-body">
+                                    <h5 class="mt-0">No articles published yet</h5>
+                                </div>
                             </div>
-                        </div>
-                        <div class="media mb-3">
-                            <img src="post-thumbnail-3.jpg" class="mr-3 profile-media-object" alt="Post Thumbnail" />
-                            <div class="media-body">
-                                <h5 class="mt-0">Blog Post Title 3</h5>
-                                <p>A brief description of the blog post.</p>
-                            </div>
-                        </div>
+                        <% } %>
+            
                     </div>
                 </div>
                 <div class="card mb-4">
