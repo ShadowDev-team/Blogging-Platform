@@ -1,6 +1,8 @@
 const express = require('express');
 const router = express.Router();
 const authenticate = require('../controllers/AuthController');
+const CommentController = require('../controllers/CommentController');
+
 
 // Authentification
 router.post('/users/register', authenticate.register);
@@ -12,8 +14,7 @@ router.get('/users/me', authenticate.me);
 
 
 
-const CommentController = require('../controllers/CommentController');
-
+//comments 
 router.post('/comments', CommentController.create);
 router.get('/articles/:article_id/comments', CommentController.getByArticle);
 // router.get('/articles/:articleId/comments', CommentController.getCommentsByArticleId);

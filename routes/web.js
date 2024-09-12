@@ -1,8 +1,15 @@
 const express = require('express');
-const authenticate = require("../controllers/AuthController");
 const router = express.Router();
+const authenticate = require("../controllers/AuthController");
 const UserController = require("../controllers/UserController");
 const upload = require("../services/multerService.js");
+const articleController = require('../controllers/ArticleContoller');
+
+
+//home page and blog routes
+router.get('/home', articleController.getAllArticles);
+router.get('/blog/:id', articleController.getBlogById);
+
 
 
  // profile routes
