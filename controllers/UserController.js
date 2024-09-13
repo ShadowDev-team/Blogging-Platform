@@ -1,20 +1,23 @@
 const { User } = require("../models");
 const bcrypt = require('bcrypt');
+const ArticleContoller =require("./ArticleContoller");
 
 //method to display profile
 
 exports.getUserProfile = async (req, res) => {
   try {
-    const userId = req.id;
 
+    const userId = req.session.user.id;
+    
     // fetch the user from the database
     const user = await User.findByPk(userId);
+    const articles = await ArticleContoller.getArticlesByUser(userId);
 
     if (!user) {
       return res.status(404).render("pages/404", { message: "User not found" });
     }
 
-    res.render("pages/profile", { user });
+    res.render("pages/profile", { user,articles });
   } catch (error) {
     console.error("Error fetching user profile:", error);
     res.status(500).send("Error fetching user profile");
@@ -28,7 +31,7 @@ exports.getUserProfile = async (req, res) => {
 exports.updateUserProfile = async (req, res) => {
     try {
 
-      const userId = req.id;
+      const userId = req.session.user.id;   
       const { username, email, password, bio,confirmpassword} = req.body;
 
       const user = await User.findByPk(userId);
