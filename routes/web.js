@@ -9,6 +9,11 @@ const articleController = require('../controllers/ArticleContoller');
 //home page and blog routes
 router.get('/home', articleController.getAllArticles);
 router.get('/blog/:id', articleController.getBlogById);
+router.get('/createArticle',(req, res)=>{
+    res.render('pages/addBlog');
+})
+router.post('/createArticle', articleController.createArticle);
+
 
 
 

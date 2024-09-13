@@ -44,47 +44,11 @@
                         <img src="/assets/img/post-details/post-author.png" alt="PostAuthor">
                     </div>
                     <h5><a href="#"><%= article.author.username %></a></h5>
-                    <p>Article Writer, Senior Designer, Wordpress Developer Father of 2 Daughters</p>
+                    <p> <%= article.author.bio %></p>
                 </div>
             </div>
-            <div class="post-nav">
-                <div class="prev-post">
-                  
-                    <a href=""><i class="far fa-angle-left"></i></a><span class="title">Previous Post</span>
-                </div>
-                <div class="next-post">
-                    <span class="title">Next Post</span><a href="#"><i class="far fa-angle-right"></i></a>
-                </div>
-            </div>
-            <div class="related-posts">
-                <h4 class="related-title">Related Posts</h4>
-                <div class="related-loop row justify-content-center">
-                    <div class="col-lg-6 col-md-6 col-sm-10">
-                        <div class="related-post-box">
-                            <div class="thumb">
-                                <img src="/assets/img/post-details/related-01.jpg" alt="image">
-                            </div>
-                            <h5 class="title">
-                                <a href="#">
-                                    The Olivier da Costa restaurant experience in Lisbon
-                                </a>
-                            </h5>
-                        </div>
-                    </div>
-                    <div class="col-lg-6 col-md-6 col-sm-10">
-                        <div class="related-post-box">
-                            <div class="thumb">
-                                <img src="/assets/img/post-details/related-02.jpg" alt="image">
-                            </div>
-                            <h5 class="title">
-                                <a href="#">
-                                    The Olivier da Costa restaurant experience in Lisbon
-                                </a>
-                            </h5>
-                        </div>
-                    </div>
-                </div>
-            </div>
+
+
         </div>
         <div class="comment-template">
             <h4 class="template-title">04 Comments</h4>
