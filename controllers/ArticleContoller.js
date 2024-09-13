@@ -52,8 +52,6 @@ async getArticlesByUser(userId){
     }    
 }
 
-
-
 }
 
 
