@@ -7,14 +7,15 @@ const articleController = require('../controllers/ArticleContoller');
 
 
 //home page and blog routes
-router.get('/home', articleController.getAllArticles);
-router.get('/blog/:id', articleController.getBlogById);
-router.get('/createArticle',(req, res)=>{
+router.get('/blog/create',(req, res)=>{
     res.render('pages/addBlog');
 })
+router.get('/home', articleController.getAllArticles);
+router.get('/blog/:id', articleController.getBlogById);
 router.post('/createArticle', articleController.createArticle);
-
-
+router.post('/blog/delete', articleController.deleteBlog);
+router.get('/blog/edit/:id', articleController.editBlog)
+router.post('/blog/update/:id', articleController.updateBlog)
 
 
  // profile routes
