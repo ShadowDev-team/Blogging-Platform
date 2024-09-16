@@ -8,7 +8,10 @@ const body = require('body-parser');
 class ArticleContoller {
 async getAllArticles(req, res){
     try{
-        const articles = await blog.findAll();
+        const articles = await blog.findAll({
+            limit: 10,
+            order: [['createdAt', 'DESC']],
+        });
         res.render('pages/home', {articles});
     }catch(error){
         console.error( error);
@@ -34,27 +37,37 @@ async getBlogById(req, res){
     }
 }
 async createArticle(req, res){
-    const {title, description, content} = req.body;
-    try{
-        let user_id = req.session.user.id;
-        const article = await blog.create({
-            user_id,
-            title,
-            description,
-            content,
-        });
-        if(article){
-            res.status(200).render('pages/addBlog');
-        }else{
-            res.status(400).render('pages/addBlog');
-
+    if(req.session.user){
+        const {title, description, content} = req.body;
+        try{
+            let user_id = req.session.user.id;
+            const article = await blog.create({
+                user_id,
+                title,
+                description,
+                content,
+            });
+            if(article){
+                res.status(200).render('pages/addBlog');
+            }else{
+                res.status(400).render('pages/addBlog');
+    
+            }
+     
+        }catch(error){
+            console.error('errrrrrrr'+error);
         }
- 
-    }catch(error){
-        console.error('errrrrrrr'+error);
+
+    }else{
+        res.render('pages/auth/login');
     }
 
 }
+
+
+  
+
+
 
 
 
@@ -73,54 +86,70 @@ async getArticlesByUser(userId){
     }    
 }
 async deleteBlog(req,res){
-    // console.log('heelo',req.session.user.id);
-    let id= req.body.id;
-    try{
-        let article = await blog.findByPk(id);
-        if(!article){
-            return res.status(404).render("pages/404");
+    if(req.session.user){
+        let id= req.body.id;
+        try{
+            let article = await blog.findByPk(id);
+            if(!article){
+                return res.status(404).render("pages/404");
+            }
+            await article.destroy();
+            res.redirect('/profile');
+    
+    
+        }catch(error){
+            console.error(error)
         }
-        await article.destroy();
-        res.redirect('/profile');
 
-
-    }catch(error){
-        console.error(error)
+    }else{
+        res.render('pages/auth/login');
     }
+
 }
 async editBlog(req, res){
-    let id = req.params.id;
-    try{
-        let article= await blog.findByPk(id);
-        if(!article){
-            res.render('pages/404');
+    if(req.session.user){
+        let id = req.params.id;
+        try{
+            let article= await blog.findByPk(id);
+            if(!article){
+                res.render('pages/404');
+            }
+            res.render('pages/updateBlog', {article});
+        }catch(error){
+            console.error('Error in edit blog methpd:'+ error);
         }
-        res.render('pages/updateBlog', {article});
-    }catch(error){
-        console.error('Error in edit blog methpd:'+ error);
+
+    }else{
+        res.redirect('/login');
     }
+
 }
 async updateBlog(req, res){
-    console.log('weeeeeeeeeeeeeeeeeeee')
-    let id = req.params.id;
-    const {title, description, content} = req.body;
-    console.log(req.body);
-
-    try{
-        let article = await blog.findByPk(id);
-        if(!article){
-            res.render('pages/404');
+    if(req.session.user){
+        let id = req.params.id;
+        const {title, description, content} = req.body;
+        console.log(req.body);
+    
+        try{
+            let article = await blog.findByPk(id);
+            if(!article){
+                res.render('pages/404');
+            }
+            article.title = title;
+            article.description = description;
+            article.content = content;
+            await article.save();
+            res.redirect('/profile');
+    
+    
+        }catch(error){
+            console.error('article not found to be updated: '+ error);
         }
-        article.title = title;
-        article.description = description;
-        article.content = content;
-        await article.save();
-        res.redirect('/profile');
 
-
-    }catch(error){
-        console.error('article not found to be updated: '+ error);
+    }else{
+        res.redirect('/login');
     }
+ 
 }
 
 }

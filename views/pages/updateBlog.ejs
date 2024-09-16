@@ -36,8 +36,23 @@
 
 </section>
 <script>
-    function showContent(){
-        // console.log('hheeeeeey')
-        tinyMCE.get('my-expressjs-tinymce-app').setContent(`<%= article.content %>`);
-    }
+  document.addEventListener("DOMContentLoaded", function() {
+  let form = document.getElementById('form');
+  let titleError= document.getElementById('titleError');
+
+  form.addEventListener('input',(e) =>
+  {
+      console.log('hello');
+      let title = document.getElementById('title').value;
+      if(title.trim() == "" || title == "" || title.length < 5){
+        titleError.innerHTML = "title is not valid";
+          document.getElementById('title').style.border = "2px solid red";
+      }else{
+        titleError.innerHTML = "";
+          document.getElementById('title').style.border = "2px solid green";
+      }
+
+  })
+  
+});
 </script>
