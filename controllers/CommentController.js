@@ -45,17 +45,21 @@ class CommentController {
     async getByArticle(req, res) {
         try {
             const { article_id } = req.params;
-            
+    
             const comments = await Comment.findAll({
-                where: { article_id }
+                where: { article_id },
+                order: [['createdAt', 'DESC']],
+                limit:3
+          
             });
-
+    
             res.json(comments);
         } catch (error) {
             console.error('Fetch comments error:', error);
             res.status(500).json({ message: 'An error occurred while fetching comments' });
         }
     }
+    
 
    
 }
