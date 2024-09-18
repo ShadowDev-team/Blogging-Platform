@@ -1,5 +1,4 @@
 const { Model } = require("sequelize");
-
 const blog = require("../models").Article;
 const {User}= require("../models");
 const body = require('body-parser');
@@ -55,7 +54,7 @@ async createArticle(req, res){
             }
      
         }catch(error){
-            console.error('errrrrrrr'+error);
+            console.error('something wrong happend in creating an article'+error);
         }
 
     }else{
