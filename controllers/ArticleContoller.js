@@ -38,6 +38,23 @@ async getBlogById(req, res){
     }
 }
 
+// function to fetch all articles of a user
+async getArticlesByUser(userId){
+    
+    try{
+    const articles = await blog.findAll({
+        where: {user_id:userId}
+    });
+    return articles;
+    }
+    catch(error){
+        console.error("Error fetching articles",error);
+    }    
 }
+
+}
+
+
+
 
 module.exports = new ArticleContoller;
