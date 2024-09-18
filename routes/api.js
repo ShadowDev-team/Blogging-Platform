@@ -13,10 +13,11 @@ router.get('/users/me', authenticate.me);
 
 
 
-
-//comments 
+//comments
 router.post('/comments', CommentController.create);
 router.get('/articles/:article_id/comments', CommentController.getByArticle);
+
+
 // router.get('/articles/:articleId/comments', CommentController.getCommentsByArticleId);
 
 // router.put('/comments/:id', CommentController.update);

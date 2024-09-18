@@ -1,9 +1,7 @@
 name: Deploy to EC2
-
 on:
   push:
     branches: [ main, dev ]
-
 jobs:
   deploy:
     runs-on: ubuntu-latest
@@ -11,16 +9,13 @@ jobs:
     - uses: actions/checkout@v2
       
     - name: Deploy to EC2
-      env:
-        EC2_SSH_KEY: ${{ secrets.EC2_SSH_KEY }}
-        EC2_HOST: ${{ secrets.EC2_HOST }}
-        EC2_USERNAME: ${{ secrets.EC2_USERNAME }}
-      run: |
-        echo "$EC2_SSH_KEY" > deploy_key.pem
-        chmod 600 deploy_key.pem
-        ssh -o StrictHostKeyChecking=no -i deploy_key.pem $EC2_USERNAME@$EC2_HOST <<EOF
+      uses: appleboy/ssh-action@master
+      with:
+        host: ${{ secrets.EC2_HOST }}
+        username: ${{ secrets.EC2_USERNAME }}
+        key: ${{ secrets.EC2_SSH_KEY }}
+        script: |
           cd Blogging-Platform
           git pull origin dev
           npm install
           pm2 restart 0
-        EOF
