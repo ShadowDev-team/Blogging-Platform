@@ -1,7 +1,7 @@
 const Joi = require('joi');
 const {Op} = require('sequelize');
 const {User} = require('../models');
-// const hashService = require('../services/hashService');
+const hashService = require('../services/hashService');
 const mailService = require('../services/mailService');
 
 class AuthController {
@@ -34,7 +34,7 @@ class AuthController {
             }
 
             // Create new user
-            // const hashedPassword = await hashService.hash(password);
+            const hashedPassword = await hashService.hash(password);
             const user = await User.create({
                 username,
                 email,
@@ -63,7 +63,7 @@ class AuthController {
             }
 
             // Validate password
-            // const isValidPassword = await hashService.check(password, user.password);
+            const isValidPassword = await hashService.check(password, user.password);
             if (!isValidPassword) {
                 return res.status(401).json({message: 'Invalid credentials'});
             }
@@ -108,7 +108,7 @@ class AuthController {
             }
 
             // Generate reset token
-            // const resetToken = await hashService.generateResetToken();
+            const resetToken = await hashService.generateResetToken();
             user.token = resetToken;
             await user.save();
 
@@ -195,7 +195,7 @@ class AuthController {
             }
 
             // Update user password
-            // user.password = await hashService.hash(password);
+            user.password = await hashService.hash(password);
             user.token = null;
             await user.save();
 
