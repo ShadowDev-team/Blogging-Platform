@@ -1,7 +1,7 @@
 const Joi = require('joi');
 const {Op} = require('sequelize');
 const {User} = require('../models');
-// const hashService = require('../services/hashService');
+const hashService = require('../services/hashService');
 const mailService = require('../services/mailService');
 
 class AuthController {
