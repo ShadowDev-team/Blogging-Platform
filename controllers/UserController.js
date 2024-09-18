@@ -5,8 +5,7 @@ const bcrypt = require('bcrypt');
 
 exports.getUserProfile = async (req, res) => {
   try {
-    const userId = req.id;
-
+    const userId = req.session.user.id;
     // fetch the user from the database
     const user = await User.findByPk(userId);
 
