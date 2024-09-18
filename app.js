@@ -7,6 +7,7 @@ require("./config/database");
 
 const apiRoutes = require('./routes/api');
 const webRoutes = require('./routes/web');
+// const commentRoutes = require('./routes/commentRoutes');
 
 
 const app = express();
@@ -25,6 +26,10 @@ app.use(express.static('public'));
 app.use('/uploads', express.static('uploads'));
 app.use("/api", apiRoutes);
 app.use("/", webRoutes);
+// app.use('/api', commentRoutes);
+
+
+
 
 
 module.exports = app;
