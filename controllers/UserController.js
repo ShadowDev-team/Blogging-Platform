@@ -1,5 +1,5 @@
 const { User } = require("../models");
-// const bcrypt = require('bcrypt');
+const bcrypt = require('bcrypt');
 
 //method to display profile
 
