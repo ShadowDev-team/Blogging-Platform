@@ -1,5 +1,6 @@
 const { User } = require("../models");
 const bcrypt = require('bcrypt');
+const Joi = require('joi');  
 const ArticleContoller =require("./ArticleContoller");
 
 
@@ -34,39 +35,79 @@ exports.getUserProfile = async (req, res) => {
 
  //method to update user profile
 
-exports.updateUserProfile = async (req, res) => {
-    try {
+ exports.updateUserProfile = async (req, res) => {
 
-      const userId = req.id;
-      const { username, email, password, bio,confirmpassword} = req.body;
+  // Joi validation schema
+  const schema = Joi.object({
+    username: Joi.string()
+      .alphanum()
+      .min(3)
+      .max(30)
+      .allow('')  
+      .optional(),
+    
+    email: Joi.string()
+      .email()
+      .allow('')  
+      .optional(),
+    
+    password: Joi.string()
+      .pattern(new RegExp('^[a-zA-Z0-9]{3,30}$'))
+      .allow('')  
+      .optional(),
+    
+    confirmpassword: Joi.string()
+      .valid(Joi.ref('password'))
+      .allow('')  
+      .optional(),
 
-      const user = await User.findByPk(userId);
+    bio: Joi.string()
+      .allow('')  
+      .optional()
 
-      if (!user) {
-        res.status(404).render("pages/404", { message: "User not found" });
-      }
+  });
+  
+  try {
+    // Validate the request body against the schema
+    const { error } = schema.validate(req.body);
 
-      user.username = username || user.username;
-      user.email = email || user.email;
-      user.bio = bio || user.bio;
-      
-      if (password || confirmpassword) {
-
-        if(password !== confirmpassword){
-          return res.status(400).json({error:"passwords should match"});
-        }
-        user.password = await bcrypt.hash(password, 1);
-      }
-
-      if(req.file){
-        user.profilePicture = req.file.filename;
-      }
-      await user.save();
-
-      return res.status(200).json({ message: "Profile updated successfully" });
-
-    } catch(error) {
-      console.error("Error updating profile:", error);
-      res.status(500).send("Error updating profile");
+    
+    if (error) {
+      return res.status(400).json({ error: error.details[0].message });
     }
-  };
+
+    const userId = req.session.user.id;  
+    const { username, email, password, bio } = req.body;
+    const user = await User.findByPk(userId);
+
+    // Check if the user exists
+    if (!user) {
+      return res.status(404).json({ error: "User not found" });
+    }
+
+    // Update user's profile fields
+    user.username = username || user.username;
+    user.email = email || user.email;
+    user.bio = bio || user.bio;
+
+    // Hash password
+    if (password) {
+      user.password = await bcrypt.hash(password, 10); 
+    }
+
+    // Profile picture update 
+    if (req.file) {
+      user.profilePicture = req.file.filename;
+    }
+
+   
+    await user.save();
+
+    return res.status(200).json({ message: "Profile updated successfully" });
+
+  } catch (error) {
+    console.error("Error updating profile:", error);
+    res.status(500).send("Error updating profile");
+  }
+};
+ 
