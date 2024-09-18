@@ -11,6 +11,7 @@ require("./config/database");
 
 const apiRoutes = require('./routes/api');
 const webRoutes = require('./routes/web');
+// const commentRoutes = require('./routes/commentRoutes');
 
 
 const app = express();
@@ -31,6 +32,8 @@ app.use('/uploads', express.static('uploads'));
 app.use("/api", apiRoutes);
 app.use("/", webRoutes);
 app.use('/tinymce', express.static(path.join(__dirname, 'node_modules', 'tinymce')));
+// app.use('/api', commentRoutes);
+
 
 
 
