@@ -1,26 +1,35 @@
 const { User } = require("../models");
 const bcrypt = require('bcrypt');
+const ArticleContoller =require("./ArticleContoller");
+
 
 //method to display profile
 
 exports.getUserProfile = async (req, res) => {
   try {
-    const userId = req.id;
 
+    if (!req.session.user || !req.session.user.id) {
+      return res.status(401).render("pages/404", { message: "Unauthorized: Please log in" });
+    }
+    const userId = req.session.user.id;
+  
     // fetch the user from the database
     const user = await User.findByPk(userId);
+    const articles = await ArticleContoller.getArticlesByUser(userId);
 
+    console.log("user",user);
     if (!user) {
       return res.status(404).render("pages/404", { message: "User not found" });
     }
 
-    res.render("pages/profile", { user });
+    res.render("pages/profile", { user,articles });
   } catch (error) {
     console.error("Error fetching user profile:", error);
     res.status(500).send("Error fetching user profile");
   }
 
 };
+
 
 
  //method to update user profile
