@@ -7,12 +7,16 @@ const ArticleContoller =require("./ArticleContoller");
 exports.getUserProfile = async (req, res) => {
   try {
 
+    if (!req.session.user || !req.session.user.id) {
+      return res.status(401).render("pages/404", { message: "Unauthorized: Please log in" });
+    }
     const userId = req.session.user.id;
-    
+  
     // fetch the user from the database
     const user = await User.findByPk(userId);
     const articles = await ArticleContoller.getArticlesByUser(userId);
 
+    console.log("user",user);
     if (!user) {
       return res.status(404).render("pages/404", { message: "User not found" });
     }
