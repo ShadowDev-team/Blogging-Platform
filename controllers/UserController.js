@@ -15,13 +15,13 @@ exports.getUserProfile = async (req, res) => {
   
     // fetch the user from the database
     const user = await User.findByPk(userId);
-    const articles = await ArticleContoller.getArticlesByUser(userId);
+    const articles = await ArticleContoller.getArticlesByUser(userId) || [];
 
-    console.log("user",user);
+    
     if (!user) {
       return res.status(404).render("pages/404", { message: "User not found" });
     }
-
+    
     res.render("pages/profile", { user,articles });
   } catch (error) {
     console.error("Error fetching user profile:", error);
@@ -50,8 +50,6 @@ exports.updateUserProfile = async (req, res) => {
       user.email = email || user.email;
       user.bio = bio || user.bio;
       
-      console.log("password",password);
-      console.log("confirmpassword",confirmpassword);
       if (password || confirmpassword) {
 
         if(password !== confirmpassword){
