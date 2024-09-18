@@ -27,7 +27,7 @@
 
             <!-- New comment form -->
             <div class="comment-form">
-                <h4>Leave a Commentsffff</h4>
+                <h4>Leave a Comment</h4>
                 <form id="comment-form">
                     <textarea id="comment-content" rows="4" placeholder="Enter your comment"></textarea>
                     <button type="submit">Comment</button>
@@ -40,7 +40,7 @@
 <!-- Script to fetch and display comments -->
 <script>
     document.addEventListener('DOMContentLoaded', function() {
-        // const articleId = <%= article.id %>; // Get the article ID
+        const articleId = <%= article.id %>; // Get the article ID
         const commentsContainer = document.getElementById('comments-container');
         const commentForm = document.getElementById('comment-form');
 
