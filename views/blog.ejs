@@ -40,7 +40,10 @@
 <!-- Script to fetch and display comments -->
 <script>
     document.addEventListener('DOMContentLoaded', function() {
-        const articleId = <%= article.id %>; // Get the article ID
+
+
+// Split the path by '/' and get the ID (assuming it's the last part)
+        const articleId = window.location.pathname.split('/').pop();
         const commentsContainer = document.getElementById('comments-container');
         const commentForm = document.getElementById('comment-form');
 
