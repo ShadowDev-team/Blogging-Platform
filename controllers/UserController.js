@@ -6,9 +6,7 @@ const ArticleContoller =require("./ArticleContoller");
 
 exports.getUserProfile = async (req, res) => {
   try {
-
     const userId = req.session.user.id;
-    
     // fetch the user from the database
     const user = await User.findByPk(userId);
     const articles = await ArticleContoller.getArticlesByUser(userId);

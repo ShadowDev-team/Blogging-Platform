@@ -7,6 +7,9 @@
                     <li><%= article.createdAt %></li>
                     <li><a href="#">Design,</a><a href="#">Travel,</a><a href="#">photography</a></li>
                 </ul>
+                <p class="short-desc">
+                    <%= article.description%>
+                </p>
             </div>
             <div class="entry-media text-center">
                 <img src="/assets/img/post-details/01.jpg" alt="image">
@@ -16,6 +19,35 @@
                     <%= article.content %>
                 </p>
             </div>
+            <div class="entry-footer">
+                <div class="post-tags">
+                    <span>Tag:</span>
+                    <a href="#">burger,</a>
+                    <a href="#">pixxa,</a>
+                    <a href="#">drink,</a>
+                    <a href="#">hot,</a>
+                    <a href="#">spacial,</a>
+                </div>
+                <div class="social-share">
+                    <span>Share:</span>
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                    <a href="#"><i class="fas fa-heart"></i></a>
+                    <a href="#"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#"><i class="fab fa-twitter"></i></a>
+                </div>
+                <div class="post-author">
+                    <div class="author-img">
+                        <img src="/assets/img/post-details/post-author.png" alt="PostAuthor">
+                    </div>
+                    <h5><a href="#"><%= article.author.username %></a></h5>
+                    <p> <%= article.author.bio %></p>
+                </div>
+            </div>
+
+
+        </div>
+        <div class="comment-template">
+            <h4 class="template-title">04 Comments</h4>
 
             <!-- Comments Section -->
             <div class="comments-section">

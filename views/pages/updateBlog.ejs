@@ -1,0 +1,58 @@
+<section class="container">
+    <h3 class="text-center">Update your article</h3>
+    <div style="margin: 4%;">
+    <p class="fs-3 text-dark text-center" data-animation="fadeInUp" data-delay="1s">The "update an Article" section allows users to update and publish update content effortlessly. 
+        Fill in the title, body, and category fields to organize and enhance your article. 
+        Once ready, submit your article to share it with the community.</p>
+    </div>
+    <div>
+        <div class="col-12">
+            <div class="text-center">
+                <a href="/home" class="load-more-btn">Go Back to home</a>
+            </div>
+        </div>
+       <div>
+
+        <form class="form" id="form" action="/blog/update/<%= article.id %>" method="POST">
+
+            <label class="form-label" >Title</label>
+              <input type="text" value="<%= article.title%>" name="title" id="title" class="form-control"  />
+            </div>
+          
+              <label class="form-label">Description</label>
+              <input type="text" name="description" value="<%= article.description%>" id="description" class="form-control" />
+            </div>
+
+
+            <label class="form-label" for="form6Example4">Content</label>
+            <textarea name="content"  class="content" id="my-expressjs-tinymce-app" ><%= article.content%></textarea>
+          
+            <button  type="submit" style="margin-top: 2%;" onmouseover="this.style.color='black'" onmouseup="this.style.color='white'" class="load-more-btn">Submit</button>
+          </form>
+
+       </div>
+
+    </div>
+
+</section>
+<script>
+  document.addEventListener("DOMContentLoaded", function() {
+  let form = document.getElementById('form');
+  let titleError= document.getElementById('titleError');
+
+  form.addEventListener('input',(e) =>
+  {
+      console.log('hello');
+      let title = document.getElementById('title').value;
+      if(title.trim() == "" || title == "" || title.length < 5){
+        titleError.innerHTML = "title is not valid";
+          document.getElementById('title').style.border = "2px solid red";
+      }else{
+        titleError.innerHTML = "";
+          document.getElementById('title').style.border = "2px solid green";
+      }
+
+  })
+  
+});
+</script>
