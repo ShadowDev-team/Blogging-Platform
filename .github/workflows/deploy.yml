@@ -18,4 +18,5 @@ jobs:
           cd Blogging-Platform
           git pull origin dev
           npm install
+          npx sequelize-cli db:migrate
           pm2 restart 0
