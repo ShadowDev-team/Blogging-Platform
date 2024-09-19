@@ -57,7 +57,7 @@
                             </button>
                             <div class="profile-dropdown-menu profile-dropdown-menu-right" aria-labelledby="profile-dropdownMenu<%= article._id %>">
                                 <div class="btn-edit">
-                                    <a class="profile-dropdown-item" href="/blog/edit/<%= article.id %>" >Edit</a>
+                                    <a class="profile-dropdown-item" href="/blogs/edit/<%= article.id %>" >Edit</a>
                                 </div>
 
 
@@ -66,7 +66,7 @@
 
 
                                 <div class="btn-delete">
-                                <form action="/blog/delete/" method="POST">
+                                <form action="/blogs/delete/" method="POST">
                                     <input type="hidden" value="<%= article.id%>" name="id">
                                     <button class="profile-dropdown-item btn-delete" >Delete</button>
                                 </form>
