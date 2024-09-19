@@ -4,6 +4,8 @@ const {User}= require("../models");
 const body = require('body-parser');
 
 
+
+
 class ArticleContoller {
 async getAllArticles(req, res){
     try{
@@ -11,7 +13,8 @@ async getAllArticles(req, res){
             limit: 10,
             order: [['createdAt', 'DESC']],
         });
-        res.render('pages/home', {articles});
+
+        res.render('pages/home',{articles});
     }catch(error){
         console.error( error);
     }

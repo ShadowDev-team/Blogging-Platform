@@ -1,37 +1,6 @@
 	<!--====== Banner Area Start ======-->
 	<section class="banner-section">
-        <% if(articles){%>
-            <% for(let i =0; i < 1; i++){ %>
-                <div class="banner-slider">
-                    <div class="sinlge-banner">
-                        <div class="banner-wrapper">
-                            <div class="banner-bg" style="background-image: url(assets/img/banner/01.jpg);"></div>
-                            <% if(articles[i]){%>
-                            <div class="banner-content" data-animation="fadeInUp" data-delay="0.3s">
-                                <h3 class="title" data-animation="fadeInUp" data-delay="0.6s">
-                                    <a href="#">
-                                        <%= articles[i].title %>
-                                    </a>
-                                </h3>
-                                <ul class="meta" data-animation="fadeInUp" data-delay="0.8s">
-                                    <li><a href="#">By - Zhon Smith</a></li>
-                                    <li><a href="#">Travel,</a><a href="#">Design,</a><a href="#">Nature</a></li>
-                                </ul>
-                                <p data-animation="fadeInUp" data-delay="1s">
-                                    <%= articles[i].content %>
-                                </p>
-                                <a href="blog-details.html" class="read-more" data-animation="fadeInUp" data-delay="1.2s">
-                                    Read More <i class="fas fa-long-arrow-right"></i>
-                                </a>
-                            </div>
-                            <%}else{%>
-                                <h3 class="title" data-animation="fadeInUp" data-delay="0.6s">No article available for the moment</h3>
-                            <%}%>
-                        </div>
-                    </div>
-                </div>
-                <%}%>
-        <% }else{%>
+
                 <div class="banner-slider">
                     <div class="sinlge-banner">
                         <div class="banner-wrapper">
@@ -39,34 +8,31 @@
                             <div class="banner-content" data-animation="fadeInUp" data-delay="0.3s">
                                 <h3 class="title" data-animation="fadeInUp" data-delay="0.6s">
                                     <a href="#">
-                                        No available articles
+                                        Start you journey with us 
                                     </a>
                                 </h3>
                                 <ul class="meta" data-animation="fadeInUp" data-delay="0.8s">
-                                    <li><a href="#">By - Zhon Smith</a></li>
-                                    <li><a href="#">Travel,</a><a href="#">Design,</a><a href="#">Nature</a></li>
+                                    <li><a href="#"> Made with Love by Shadow Dev team</a></li>
                                 </ul>
                                 <p data-animation="fadeInUp" data-delay="1s">
-                                    Dear User, We have no article for the moment, start your journey with us and create one 
+                                    Welcome to our blog platform that aims to connect people from the world!
                                 </p>
-                                <a href="blog-details.html" class="read-more" data-animation="fadeInUp" data-delay="1.2s">
-                                    Read More <i class="fas fa-long-arrow-right"></i>
-                                </a>
+                                <div class="d-flex justify-content-center mt-5">
+                                    <a href="#" class="btn btn-dark"><i class="fab fa-twitter"></i></a>
+                                    <a href="#" class="btn btn-dark mx-4"><i class="fab fa-instagram"></i></a>
+                                    <a href="#" class="btn btn-dark"><i class="fab fa-linkedin"></i></a>
+                                </div>
+
                             </div>
-                                <h3 class="title" data-animation="fadeInUp" data-delay="0.6s">No article available for the moment</h3>
                         </div>
                     </div>
                 </div>
-
-            <%} %>
-
 
 
         <section class="post-area with-sidebar" id="postWarpperLoaded">
             <div class="container container-1250">
                 <div class="post-area-inner">
-                    <%if(articles){ %>
-
+                    <%if(articles.length > 0){ %>
                     <div class="entry-posts two-column masonary-posts row">
                         <% articles.map((blog)=>{%>
                         <div class="col-lg-6 col-sm-6">
@@ -100,19 +66,28 @@
                                 </div>
                             </div>
                         </div>
-                    <%})%> 
-    
                         <div class="col-12">
                             <div class="text-center">
                                 <a href="#" class="load-more-btn">Load More</a>
                             </div>
                         </div>
                     </div>
+                    <%})}else{%>
+
+                        <div class="container container-1250">
+                            <div style="width:90vw !important;"class="post-area-inner bg-succuess  d-flex justify-content-center align-items-center">
+                                <div style="width:100vw !important;" class="my-5">
+                                    <div class="d-flex justify-content-center align-items-center" style="width: 80vw !important">
+                                        <div class="entry-post d-flex justify-content-center align-items-center">
+                                            <h3 class="test-center">Opps, No article available</h3>
+                                        </div>
+                                </div>
+
+
+
+                            </div>
                         
-                    <%}else{%>
-                        <div class="entry-posts two-column masonary-posts row">
-                            <h3>Ops there's no article</h3>
-                        </div>
+                       </div>
 
                     <%} %>
 
