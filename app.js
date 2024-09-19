@@ -25,6 +25,12 @@ app.use(session({
     resave: false,
     saveUninitialized: true
 }));
+
+app.use((req, res, next) => {
+    res.locals.session = req.session;
+    next();
+  });
+
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(express.json());
 app.use(expressLayouts);
