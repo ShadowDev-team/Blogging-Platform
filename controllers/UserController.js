@@ -20,7 +20,7 @@ exports.getUserProfile = async (req, res) => {
 
     
     if (!user) {
-      return res.status(404).render("pages/404", { message: "User not found" });
+      return res.status(404).render("pages/404", { errStatus: "404", errMessage: "User not found" });
     }
     
     res.render("pages/profile", { user,articles });

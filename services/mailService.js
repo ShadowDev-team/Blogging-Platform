@@ -21,7 +21,7 @@ async function send(targetEmail, resetToken) {
             html: await ejs.renderFile(
                 path.join(__dirname, '../views/pages/auth', 'reset-password-mail.ejs')
                 ,
-                {resetLink: 'http://localhost:3000/reset-password/verify?token=' + resetToken}
+                {resetLink: `${process.env.APP_HOST}/reset-password/verify?token=` + resetToken}
             ),
         });
         return true;

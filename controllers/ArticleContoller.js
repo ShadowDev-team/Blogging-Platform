@@ -90,7 +90,7 @@ async deleteBlog(req,res){
         try{
             let article = await blog.findByPk(id);
             if(!article){
-                return res.status(404).render("pages/404");
+                return res.status(404).render("pages/404", {errStatus: 404, message: "Article not found"});
             }
             await article.destroy();
             res.redirect('/profile');
