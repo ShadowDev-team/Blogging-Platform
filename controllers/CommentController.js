@@ -6,8 +6,8 @@ class CommentController {
     async create(req, res) {
         try {
             const { content, article_id } = req.body;
-            const user_id = req.session.id;
-            if(user_id){
+            const user_id = req.session.user.id;
+           
                 const schema = Joi.object({
                     content: Joi.string().required(),
                     article_id: Joi.number().integer().required()
@@ -37,16 +37,12 @@ class CommentController {
                     comment
                 });
 
-            }else{
-                console.log('user is undefinded');
-                res.redirect('/login');
-            }
 
             // Validate input
            
         } catch (error) {
-            console.error('Comment creation error:', error);
             res.status(500).json({ message: 'An error occurred while creating the comment' });
+          
         }
     }
 
