@@ -29,6 +29,7 @@ async getBlogById(req, res){
                 as: 'author'
             }]
         });
+        console.log('heeey',article)
         if(article !== null){
             res.render('pages/blog', {article});
         }else{
@@ -39,7 +40,7 @@ async getBlogById(req, res){
     }
 }
 async createArticle(req, res){
-    console.log('Uploaded file:', req.file);  // Check if the image is being passed
+    console.log('Uploaded file:', req.file);  
 
     if(req.session.user){
         console.log('######')

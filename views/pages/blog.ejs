@@ -37,7 +37,7 @@
                 </div>
                 <div class="post-author">
                     <div class="author-img">
-                        <img src="/assets/img/post-details/post-author.png" alt="PostAuthor">
+                        <img src="<%= article.author.profilePicture ? '/uploads/'+article.author.profilePicture : '/assets/img/post-details/profile-default.jpg' %>" alt="PostAuthor">
                     </div>
                     <h5><a href="#"><%= article.author.username %></a></h5>
                     <p> <%= article.author.bio %></p>
