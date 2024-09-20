@@ -21,6 +21,9 @@ class AuthController {
                     .string()
                     .pattern(new RegExp('^(?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$'))
                     .required()
+                    .messages({
+                        'string.pattern.base': 'Password must be at least 8 characters long, include one uppercase letter, one lowercase letter, and one number',
+                    })
             });
             const result = await schema.validate({username, email, password});
 

@@ -1,4 +1,6 @@
 const { User } = require("../models");
+const { Article } = require("../models");
+const { Comment } = require("../models");
 const bcrypt = require('bcrypt');
 const Joi = require('joi');  
 const ArticleContoller =require("./ArticleContoller");
@@ -20,10 +22,31 @@ exports.getUserProfile = async (req, res) => {
 
     
     if (!user) {
-      return res.status(404).render("pages/404", { message: "User not found" });
+      return res.status(404).render("pages/404", { errStatus: "404", errMessage: "User not found" });
     }
-    
-    res.render("pages/profile", { user,articles });
+
+    // Count the number of articles by the user
+    const articleCount = await Article.count({
+      where: { user_id: userId }
+    });
+
+    // Count the number of comments made by the user
+    const userCommentCount = await Comment.count({
+      where: { user_id: userId }
+    });
+
+    // Count the number of comments made on the user's articles
+    const articleCommentCount = await Comment.count({
+      include: [
+        {
+          model: Article,
+          as: 'article',
+          where: { user_id: userId }
+        }
+      ]
+    });
+
+    res.render("pages/profile", { user,articles,articleCount,userCommentCount,articleCommentCount});
   } catch (error) {
     console.error("Error fetching user profile:", error);
     res.status(500).send("Error fetching user profile");
@@ -63,6 +86,10 @@ exports.getUserProfile = async (req, res) => {
 
     bio: Joi.string()
       .allow('')  
+      .optional(),
+      
+    job: Joi.string()
+      .allow('')  
       .optional()
 
   });
@@ -77,7 +104,7 @@ exports.getUserProfile = async (req, res) => {
     }
 
     const userId = req.session.user.id;  
-    const { username, email, password, bio } = req.body;
+    const { username, email, password, bio,job } = req.body;
     const user = await User.findByPk(userId);
 
     // Check if the user exists
@@ -89,6 +116,7 @@ exports.getUserProfile = async (req, res) => {
     user.username = username || user.username;
     user.email = email || user.email;
     user.bio = bio || user.bio;
+    user.job = job || user.job;
 
     // Hash password
     if (password) {
