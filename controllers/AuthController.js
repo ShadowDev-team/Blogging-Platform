@@ -17,7 +17,13 @@ class AuthController {
                     .max(30)
                     .required(),
                 email: Joi.string().email().required(),
-                password: Joi.string().pattern(new RegExp('^[a-zA-Z0-9]{3,30}$')).required()
+                password: Joi
+                    .string()
+                    .pattern(new RegExp('^(?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$'))
+                    .required()
+                    .messages({
+                        'string.pattern.base': 'Password must be at least 8 characters long, include one uppercase letter, one lowercase letter, and one number',
+                    })
             });
             const result = await schema.validate({username, email, password});
 
@@ -178,7 +184,10 @@ class AuthController {
 
             // validate form input
             const schema = Joi.object({
-                password: Joi.string().pattern(new RegExp('^[a-zA-Z0-9]{3,30}$')).required()
+                password: Joi
+                    .string()
+                    .pattern(new RegExp('^(?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$'))
+                    .required()
             });
             const result = await schema.validate({password});
 

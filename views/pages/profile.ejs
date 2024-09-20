@@ -10,7 +10,7 @@
                     <img src="/uploads/<%= user.profilePicture %>" alt="Profile Picture"
                         class="rounded-circle mb-3 profile-picture" />
                     <h1 class="display-4 mb-2"><%= user.username %></h1>
-                    <p class="lead mb-4">Software Engineer, Blogger, and Traveler</p>
+                    <p class="lead mb-4"><%= user.job%></p>
                     <div class="d-flex justify-content-center mb-4">
                         <a href="#" class="btn btn-dark"><i class="fab fa-twitter"></i></a>
                         <a href="#" class="btn btn-dark mx-4"><i class="fab fa-instagram"></i></a>
@@ -22,16 +22,16 @@
                     </div>
                     <div class="row">
                         <div class="col-4 profile-stat-item">
-                            <h4 class="mb-1">28</h4>
+                            <h4 class="mb-1"><%= articleCount  %></h4>
                             <p class="mb-0">Posts</p>
                         </div>
                         <div class="col-4 profile-stat-item">
-                            <h4 class="mb-1">1.2K</h4>
-                            <p class="mb-0">Followers</p>
+                            <h4 class="mb-1"><%= userCommentCount %></h4>
+                            <p class="mb-0">Your comments</p>
                         </div>
                         <div class="col-4 profile-stat-item">
-                            <h4 class="mb-1">354</h4>
-                            <p class="mb-0">Following</p>
+                            <h4 class="mb-1"><%= articleCommentCount  %></h4>
+                            <p class="mb-0">Comments on your articles</p>
                         </div>
                     </div>
                 </div>
@@ -46,10 +46,10 @@
                     <% if(articles.length > 0) { %>
                     <% articles.forEach(article => { %>
                     <div class="profile-media mb-3 position-relative">
-                        <img src="post-thumbnail-1.jpg" class="mr-3 profile-profile-media-object" alt="Post Thumbnail" />
+                        <!-- <img src="post-thumbnail-1.jpg" class="mr-3 profile-profile-media-object" alt="Post Thumbnail" /> -->
                         <div class="profile-media-body">
-                            <h5 class="mt-0"><%= article.title %></h5>
-                            <p>A brief description of the blog post.</p>
+                            <a href="/blog/<%= article.id %>"> <h5 class="mt-0"><%= article.title %></h5></a>
+                            <p><%= article.description %></p>
                         </div>
                         <div class="profile-dropdown">
                             <button class="btn btn-link profile-dropdown-toggle" type="button" id="profile-dropdownMenu<%= article._id %>" data-toggle="profile-dropdown" aria-haspopup="true" aria-expanded="false">
@@ -57,16 +57,10 @@
                             </button>
                             <div class="profile-dropdown-menu profile-dropdown-menu-right" aria-labelledby="profile-dropdownMenu<%= article._id %>">
                                 <div class="btn-edit">
-                                    <a class="profile-dropdown-item" href="/blog/edit/<%= article.id %>" >Edit</a>
+                                    <a class="profile-dropdown-item" href="/blogs/edit/<%= article.id %>" >Edit</a>
                                 </div>
-
-
-
-
-
-
                                 <div class="btn-delete">
-                                <form action="/blog/delete/" method="POST">
+                                <form action="/blogs/delete/" method="POST">
                                     <input type="hidden" value="<%= article.id%>" name="id">
                                     <button class="profile-dropdown-item btn-delete" >Delete</button>
                                 </form>
@@ -86,35 +80,7 @@
             </div>
 
 
-            <div class="card mb-4">
-                <div class="card-header">Activity</div>
-                <div class="card-body">
-                    <div class="media mb-3">
-                        <img src="activity-thumbnail-1.jpg" class="mr-3 profile-media-object" alt="Activity Thumbnail" />
-                        <div class="media-body">
-                            <h5 class="mt-0">Recent Activity</h5>
-                            <p>John Doe commented on a post.</p>
-                            <small class="text-muted">2 hours ago</small>
-                        </div>
-                    </div>
-                    <div class="media mb-3">
-                        <img src="activity-thumbnail-2.jpg" class="mr-3 profile-media-object" alt="Activity Thumbnail" />
-                        <div class="media-body">
-                            <h5 class="mt-0">Recent Activity</h5>
-                            <p>John Doe liked a post.</p>
-                            <small class="text-muted">4 hours ago</small>
-                        </div>
-                    </div>
-                    <div class="media mb-3">
-                        <img src="activity-thumbnail-3.jpg" class="mr-3 profile-media-object" alt="Activity Thumbnail" />
-                        <div class="media-body">
-                            <h5 class="mt-0">Recent Activity</h5>
-                            <p>John Doe started following a new user.</p>
-                            <small class="text-muted">8 hours ago</small>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            
         </div>
     </div>
 </div>
@@ -147,6 +113,11 @@
                         <div class="mb-3">
                             <label for="emailInput" class="form-label">Email</label>
                             <input type="email" class="form-control" id="emailInput" value="<%= user.email %>" />
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="jobInput" class="form-label">Current position</label>
+                            <input type="text" class="form-control" id="jobInput" value="<%= user.job %>" />
                         </div>
     
                         <div class="mb-3">
@@ -228,6 +199,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
             profileData.append("username",document.getElementById("nameInput").value);
             profileData.append("email",document.getElementById("emailInput").value);
+            profileData.append("job",document.getElementById("jobInput").value);
             profileData.append("password",passwordInput.value);
             profileData.append("bio",document.getElementById("bioInput").value);
             if(profilePicture){
@@ -249,7 +221,7 @@ document.addEventListener("DOMContentLoaded", function() {
                 console.log(response);
                 if (response.ok) {               
                     location.reload();  
-                    console.log("qqqqqqqqqqqqqq");              
+                  
                 } else {
                     manageError(result.error);
                 }

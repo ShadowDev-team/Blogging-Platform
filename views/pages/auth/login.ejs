@@ -27,7 +27,7 @@
     <link rel="stylesheet" href="assets/css/auth.css" />
 </head>
 
-<body style="background: green !important">
+<body>
 <section class="shopping-login-page">
     <div class="container">
         <div class="login-wrapper">
@@ -41,16 +41,15 @@
                         <form class="login-form" onsubmit="handleFormSubmit(event, 'login')">
                             <p>
                                 <label for="login">Username or email address<span class="required">*</span></label>
-                                <input type="text" id="login" name="login">
+                                <input type="text" id="login" name="login" required>
                             </p>
                             <p>
                                 <label for="password">Password<span class="required">*</span></label>
-                                <input type="password" id="password" name="password">
+                                <input type="password" id="password" name="password" required>
                             </p>
                             <p class="d-flex justify-content-between">
                                     <span class="form-remember">
-                                        <input type="checkbox" id="rememberme">
-                                        <label for="rememberme">Remember me </label>
+                                        <a href="/register">register</a>
                                     </span>
                                 <span>
                                         <a href="/reset-password">Lost your password?</a>

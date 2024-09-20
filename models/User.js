@@ -49,10 +49,15 @@ module.exports = (sequelize, DataTypes) => {
             type: DataTypes.TEXT,
             allowNull: true,
         },
+        job:{
+            type: DataTypes.STRING,
+            allowNull: true,
+        }
     }, {
         sequelize,
         modelName: 'User',
         timestamps: false,
+        tableName:'users',
     });
     return User;
 };

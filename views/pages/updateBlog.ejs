@@ -8,12 +8,12 @@
     <div>
         <div class="col-12">
             <div class="text-center">
-                <a href="/home" class="load-more-btn">Go Back to home</a>
+                <a href="/" class="load-more-btn">Go Back to home</a>
             </div>
         </div>
        <div>
 
-        <form class="form" id="form" action="/blog/update/<%= article.id %>" method="POST">
+        <form class="form" id="form" action="/blogs/update/<%= article.id %>" method="POST">
 
             <label class="form-label" >Title</label>
               <input type="text" value="<%= article.title%>" name="title" id="title" class="form-control"  />
