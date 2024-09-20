@@ -42,7 +42,6 @@
 
   form.addEventListener('input',(e) =>
   {
-      console.log('hello');
       let title = document.getElementById('title').value;
       if(title.trim() == "" || title == "" || title.length < 5){
         titleError.innerHTML = "title is not valid";
