@@ -45,5 +45,4 @@ app.use('/tinymce', express.static(path.join(__dirname, 'node_modules', 'tinymce
 
 
 
-
 module.exports = app;

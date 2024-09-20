@@ -12,7 +12,10 @@ router.get('/blogs/create',(req, res)=>{
 })
 router.get('/', articleController.getAllArticles);
 router.get('/blog/:id', articleController.getBlogById);
-router.post('/createarticle', articleController.createArticle);
+// router.post('/createarticle', articleController.createArticle);
+router.post("/createarticle",upload.single("image"), articleController.createArticle);
+
+
 router.post('/blogs/delete', articleController.deleteBlog);
 router.get('/blogs/edit/:id', articleController.editBlog)
 router.post('/blogs/update/:id', articleController.updateBlog)

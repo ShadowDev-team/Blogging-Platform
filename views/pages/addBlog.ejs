@@ -14,19 +14,28 @@
         </div>
        <div>
 
-        <form class="form" id="form" action="/createarticle" method="POST">
+        <form class="form" id="form" enctype="multipart/form-data" method="POST" >
+          <div>
             <label class="form-label" >Title</label>
               <input type="text" name="title" id="title" class="form-control" required />
               <span class="text-danger" id="titleError"></span>
             </div>
+            <div>
               <label class="form-label">Description</label>
               <input type="text" name="description" id="description" class="form-control" />
             </div>
+            <div>
+              <label for="file" class="form-label">Add Image</label>
+              <input type="file" name="image" id="image" class="form-control" >
+
+            </div>
+
+
             <label class="form-label" >Content</label>
             <textarea name="content" class="content" id="my-expressjs-tinymce-app" ></textarea>
 
           
-            <button  type="submit" style="margin-top: 2%;" onmouseover="this.style.color='black'" onmouseup="this.style.color='white'" class="load-more-btn">Submit</button>
+            <button type="submit" style="margin-top: 2%;" onmouseover="this.style.color='black'" onmouseup="this.style.color='white'" class="load-more-btn" >Submit</button>
           </form>
 
        </div>
@@ -35,6 +44,39 @@
 
 </section>
 <script>
+
+let form = document.getElementById("form");
+form.addEventListener('submit', async function (e) {
+  console.log('clicked')
+  e.preventDefault();
+  const title = document.getElementById("title");
+  const description = document.getElementById("description");
+  const content = tinymce.get("my-expressjs-tinymce-app").getContent();
+  const image = document.getElementById("image");
+  const formData = new FormData();
+  formData.append('title', title.value);
+  formData.append('description', description.value);
+  formData.append('content', content);
+  formData.append('image', image.files[0]);
+
+try{
+  const response = await fetch("http://localhost:3000/createarticle", {
+        method: 'POST',
+        body: formData
+    }).then((res)=> {
+      if(res.ok){
+        window.location.href = '/';
+      }
+    })
+    console.log('data submitted successfully')
+
+}catch(error){
+  console.error("smth wrong happend in adding blog", error);
+}
+});
+
+
+
   document.addEventListener("DOMContentLoaded", function() {
   let form = document.getElementById('form');
   let titleError= document.getElementById('titleError');

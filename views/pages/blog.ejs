@@ -12,11 +12,11 @@
                 </p>
             </div>
             <div class="entry-media text-center">
-                <img src="/assets/img/post-details/01.jpg" alt="image">
+                <img src="<%= article.image ? '/uploads/'+article.image : 'assets/img/posts/01.jpg' %>" alt="Image">
             </div>
             <div class="entry-content">
                 <p class="has-dropcap">
-                    <%= article.content %>
+                    <%- article.content %>
                 </p>
             </div>
             <div class="entry-footer">
@@ -37,7 +37,7 @@
                 </div>
                 <div class="post-author">
                     <div class="author-img">
-                        <img src="/assets/img/post-details/post-author.png" alt="PostAuthor">
+                        <img src="<%= article.author.profilePicture ? '/uploads/'+article.author.profilePicture : '/assets/img/post-details/profile-default.jpg' %>" alt="PostAuthor">
                     </div>
                     <h5><a href="#"><%= article.author.username %></a></h5>
                     <p> <%= article.author.bio %></p>

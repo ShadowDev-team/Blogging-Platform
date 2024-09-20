@@ -4,6 +4,8 @@ const {User}= require("../models");
 const body = require('body-parser');
 
 
+
+
 class ArticleContoller {
 async getAllArticles(req, res){
     try{
@@ -11,7 +13,8 @@ async getAllArticles(req, res){
             limit: 10,
             order: [['createdAt', 'DESC']],
         });
-        res.render('pages/home', {articles});
+
+        res.render('pages/home',{articles});
     }catch(error){
         console.error( error);
     }
@@ -26,6 +29,7 @@ async getBlogById(req, res){
                 as: 'author'
             }]
         });
+        console.log('heeey',article)
         if(article !== null){
             res.render('pages/blog', {article});
         }else{
@@ -36,8 +40,16 @@ async getBlogById(req, res){
     }
 }
 async createArticle(req, res){
+    console.log('Uploaded file:', req.file);  
+
     if(req.session.user){
+        console.log('######')
+        console.log(req.body);
         const {title, description, content} = req.body;
+        let imgPath = null;
+        if(req.file){
+            imgPath = req.file.filename;
+        }
         try{
             let user_id = req.session.user.id;
             const article = await blog.create({
@@ -45,11 +57,12 @@ async createArticle(req, res){
                 title,
                 description,
                 content,
+                image: imgPath
             });
             if(article){
-                res.status(200).render('pages/addBlog');
+                res.status(200).redirect('/');
             }else{
-                res.status(400).render('pages/addBlog');
+                res.status(400).redirect('/blogs/create');
     
             }
      
