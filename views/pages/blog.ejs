@@ -139,11 +139,12 @@
                         .then(response => response.json())
                         .then(data => {
                             if (data.message === 'Comment created successfully') {
+                                
                                 // Push the new comment into the comments array
                                 comments.push({
-                                    author: { username: 'current_user' }, // Replace with the actual current user's username
-                                    content: content,
-                                    createdAt: new Date().toISOString()
+                                    author: { username: data.comment.author.username}, // Replace with the actual current user's username
+                                    content: data.comment.content,
+                                    createdAt: data.comment.createdAt
                                 });
         
                                 displayComments(); // Re-render the comments

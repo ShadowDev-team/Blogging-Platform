@@ -31,10 +31,21 @@ class CommentController {
                     article_id,
                     user_id
                 });
+
+                const commentWithUser = await Comment.findOne({
+                    where: { id: comment.id },
+                    include: [
+                        {
+                            model: User,
+                            as: 'author',
+                            attributes: ['username'] // Only get the username
+                        }
+                    ]
+                });
     
                 res.status(201).json({
                     message: 'Comment created successfully',
-                    comment
+                    comment: commentWithUser
                 });
 
 
@@ -58,8 +69,7 @@ class CommentController {
                     as: 'author', // Use the alias defined in the association
                     attributes: ['username'] // Only select the username from the User model
                 }],
-                // order: [['createdAt', 'DESC']],
-                // limit: 3 // Limit to the last 3 comments
+               
             });
     
             res.json(comments);
