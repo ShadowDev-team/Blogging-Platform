@@ -1,5 +1,5 @@
 const authMiddleware = (req, res, next) => {
-    const publicPaths = ['/home', '/login', '/register', '/reset-password', 'reset-password/verify'];
+    const publicPaths = ['/', '/login', '/register', '/reset-password', 'reset-password/verify'];
 
     const isPublicPath = publicPaths.includes(req.path) || /^\/blog\/\d+$/.test(req.path);
 
