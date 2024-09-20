@@ -6,11 +6,7 @@
     object-fit: cover;
 }
 
-.profile-media-object {
-    width: 100px;
-    height: 100px;
-    object-fit: cover;
-}
+
 
 .profile-edit-button {
     position: absolute;
@@ -34,25 +30,33 @@
 }
 
 
-
-
 .profile-media {
-    position: relative;
-    padding-right: 4rem; 
+    display: flex;
+    align-items: center; 
+    
+}
+
+.profile-media-object {
+    width: 75px;
+    height: 75px;
+    object-fit: cover;
+    border-radius: 10px;
+    
+}
+
+.profile-media-body {
+    flex-grow: 1;
 }
 
 .profile-dropdown {
-    position: absolute;
-    top: 0;
-    right: -.75rem; 
-    display: inline-block;
+    margin-left: auto; 
 }
+
 
 .profile-dropdown-toggle {
     font-size: 1.5rem;
     line-height: 1;
     padding: 0;
-    background: none;
     border: none;
     color: #333;
     position: relative;
@@ -69,7 +73,7 @@
     min-width: 5rem;
     position: absolute;
     right: 0;
-    top: 100%; 
+    top: 70%; 
     display: none;
     z-index: 1;
 }
