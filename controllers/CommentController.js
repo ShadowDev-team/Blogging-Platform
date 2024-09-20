@@ -23,7 +23,6 @@ class CommentController {
             if (!article) {
                 return res.status(404).json({ message: 'Article not found' });
             }
-            console.log(article);
 
             // Create comment
             const comment = await Comment.create({

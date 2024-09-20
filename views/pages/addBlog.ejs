@@ -47,7 +47,6 @@
 
 let form = document.getElementById("form");
 form.addEventListener('submit', async function (e) {
-  console.log('clicked')
   e.preventDefault();
   const title = document.getElementById("title");
   const description = document.getElementById("description");
@@ -68,7 +67,6 @@ try{
         window.location.href = '/';
       }
     })
-    console.log('data submitted successfully')
 
 }catch(error){
   console.error("smth wrong happend in adding blog", error);
@@ -85,7 +83,6 @@ try{
 
   form.addEventListener('input',(e) =>
   {
-      console.log('hello');
       let title = document.getElementById('title').value;
       if(title.trim() == "" || title == "" || title.length < 5){
         titleError.innerHTML = "title is not valid";

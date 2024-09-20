@@ -29,7 +29,6 @@ async getBlogById(req, res){
                 as: 'author'
             }]
         });
-        console.log('heeey',article)
         if(article !== null){
             res.render('pages/blog', {article});
         }else{
@@ -40,11 +39,8 @@ async getBlogById(req, res){
     }
 }
 async createArticle(req, res){
-    console.log('Uploaded file:', req.file);  
 
     if(req.session.user){
-        console.log('######')
-        console.log(req.body);
         const {title, description, content} = req.body;
         let imgPath = null;
         if(req.file){
@@ -140,7 +136,6 @@ async updateBlog(req, res){
     if(req.session.user){
         let id = req.params.id;
         const {title, description, content} = req.body;
-        console.log(req.body);
     
         try{
             let article = await blog.findByPk(id);

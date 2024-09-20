@@ -211,9 +211,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
 
 
-        async function updateProfile() {
-            console.log("clicked");
-    
+        async function updateProfile() {    
             const profileData = new FormData();
             
             const profilePicture = document.getElementById("profilePicture").files[0];
@@ -243,7 +241,6 @@ document.addEventListener("DOMContentLoaded", function() {
                 console.log(response);
                 if (response.ok) {               
                     location.reload();  
-                    console.log("qqqqqqqqqqqqqq");              
                 } else {
                     manageError(result.error);
                 }
