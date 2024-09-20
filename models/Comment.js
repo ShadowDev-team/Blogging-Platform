@@ -16,8 +16,9 @@ module.exports = (sequelize, DataTypes) => {
             });
             Comment.belongsTo(models.User, {
                 foreignKey: 'user_id',
-                as: 'author',
+                as: 'author', // You used 'author' as the alias
             });
+            
         }
     }
 

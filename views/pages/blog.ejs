@@ -47,97 +47,125 @@
 
         </div>
         <div class="comment-template">
-            <h4 class="template-title">04 Comments</h4>
-
+            <h4 class="template-title"><span id="comment-count"></span> Commentaire</h4>
             <!-- Comments Section -->
             <div class="comments-section">
-                <h4 class="comments-title">Comments</h4>
                 <div id="comments-container">
                     <!-- Comments will be appended here by JavaScript -->
                 </div>
+                <p class="d-inline-flex gap-1">
+                    <h1 id="toggle-comments" class="btn mb-4"></h1>
+                </p>
             </div>
-
+        
             <!-- New comment form -->
             <div class="comment-form">
-                <h4>Leave a Comment</h4>
+                <h3>Laisser un commentaire</h3>
                 <form id="comment-form">
                     <textarea id="comment-content" rows="4" placeholder="Enter your comment"></textarea>
-                    <button type="submit">Comment</button>
+                    <button type="submit">Commentaire</button>
                 </form>
             </div>
         </div>
-    </div>
-</section>
-
-<!-- Script to fetch and display comments -->
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-
-
-// Split the path by '/' and get the ID (assuming it's the last part)
-        const articleId = window.location.pathname.split('/').pop();
-        const commentsContainer = document.getElementById('comments-container');
-        const commentForm = document.getElementById('comment-form');
-
-        // Fetch comments for the article
-        function fetchComments() {
-            fetch(`/api/articles/${articleId}/comments`)
-                .then(response => response.json())
-                .then(comments => {
+        
+        <!-- Script to fetch and display comments -->
+        <script>
+            document.addEventListener('DOMContentLoaded', function () {
+                const articleId = window.location.pathname.split('/').pop();
+                const commentsContainer = document.getElementById('comments-container');
+                const commentForm = document.getElementById('comment-form');
+                const commentCountElement = document.getElementById('comment-count');
+                const toggleCommentsButton = document.getElementById('toggle-comments');
+        
+                let comments = [];
+                let isExpanded = false; // Track the state of comments visibility
+        
+                // Fetch comments for the article
+                function fetchComments() {
+                    fetch(`/api/articles/${articleId}/comments`)
+                        .then(response => response.json())
+                        .then(fetchedComments => {
+                            comments = fetchedComments; // Store fetched comments
+                            displayComments(); // Initially display limited comments
+                            commentCountElement.textContent = comments.length; // Update comment count
+                        })
+                        .catch(error => {
+                            console.error('Error fetching comments:', error);
+                            commentsContainer.innerHTML = '<p>Failed to load comments.</p>';
+                        });
+                }
+        
+                // Display limited or all comments based on isExpanded state
+                function displayComments() {
                     commentsContainer.innerHTML = ''; // Clear previous comments
-
-                    if (comments.length === 0) {
+                    const commentsToShow = isExpanded ? comments : comments.slice(0, 3); // Show all or just 3
+        
+                    if (commentsToShow.length === 0) {
                         commentsContainer.innerHTML = '<p>No comments yet.</p>';
                     } else {
-                        comments.forEach(comment => {
+                        commentsToShow.forEach(comment => {
                             const commentElement = document.createElement('div');
                             commentElement.classList.add('comment');
                             commentElement.innerHTML = `
-                                <p><strong>User ${comment.user_id}:</strong> ${comment.content}</p>
+                                <p><strong>${comment.author ? comment.author.username : 'Anonymous'}:</strong> ${comment.content}</p>
                                 <p><small>${new Date(comment.createdAt).toLocaleString()}</small></p>
                                 <hr>
                             `;
                             commentsContainer.appendChild(commentElement);
                         });
                     }
-                })
-                .catch(error => {
-                    console.error('Error fetching comments:', error);
-                    commentsContainer.innerHTML = '<p>Failed to load comments.</p>';
-                });
-        }
-
-        // Fetch comments when the page loads
-        fetchComments();
-
-        // Handle comment form submission
-        commentForm.addEventListener('submit', function(event) {
-            event.preventDefault();
-
-            const content = document.getElementById('comment-content').value;
-
-            fetch(`/api/comments`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({
-                    content: content,
-                    article_id: articleId
-                })
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.message === 'Comment created successfully') {
-                    fetchComments(); // Refresh the comments after adding a new one
-                    document.getElementById('comment-content').value = ''; // Clear the input
-                } else {
-                    alert('Failed to add comment: ' + data.message);
+        
+                    // Update button text based on whether comments are expanded or collapsed
+                    toggleCommentsButton.textContent = isExpanded ? 'Read Less' : 'Read More';
+                    toggleCommentsButton.style.display = comments.length > 3 ? 'inline-block' : 'none'; // Hide button if fewer than 4 comments
                 }
-            })
-            .catch(error => {
-                console.error('Error submitting comment:', error);
+        
+                // Handle comment form submission
+                commentForm.addEventListener('submit', function (event) {
+                    event.preventDefault();
+                    const content = document.getElementById('comment-content').value;
+        
+                    // Send the new comment to the backend
+                    fetch(`/api/comments`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({
+                            content: content,
+                            article_id: articleId
+                        })
+                    })
+                        .then(response => response.json())
+                        .then(data => {
+                            if (data.message === 'Comment created successfully') {
+                                // Push the new comment into the comments array
+                                comments.push({
+                                    author: { username: 'current_user' }, // Replace with the actual current user's username
+                                    content: content,
+                                    createdAt: new Date().toISOString()
+                                });
+        
+                                displayComments(); // Re-render the comments
+                                document.getElementById('comment-content').value = ''; // Clear input field
+                                commentCountElement.textContent = comments.length; // Update the comment count
+                            } else {
+                                alert('Failed to add comment: ' + data.message);
+                            }
+                        })
+                        .catch(error => {
+                            console.error('Error submitting comment:', error);
+                        });
+                });
+        
+                // Toggle comments visibility on button click
+                toggleCommentsButton.addEventListener('click', function () {
+                    isExpanded = !isExpanded; // Toggle the state
+                    displayComments(); // Refresh comments based on new state
+                });
+        
+                // Fetch and display comments when the page loads
+                fetchComments();
             });
-        });
-    });
-</script>
+        </script>
+        
