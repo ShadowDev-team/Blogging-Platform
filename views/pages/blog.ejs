@@ -12,11 +12,11 @@
                 </p>
             </div>
             <div class="entry-media text-center">
-                <img src="/assets/img/post-details/01.jpg" alt="image">
+                <img src="<%= article.image ? '/uploads/'+article.image : 'assets/img/posts/01.jpg' %>" alt="Image">
             </div>
             <div class="entry-content">
                 <p class="has-dropcap">
-                    <%= article.content %>
+                    <%- article.content %>
                 </p>
             </div>
             <div class="entry-footer">

@@ -39,8 +39,16 @@ async getBlogById(req, res){
     }
 }
 async createArticle(req, res){
+    console.log('Uploaded file:', req.file);  // Check if the image is being passed
+
     if(req.session.user){
+        console.log('######')
+        console.log(req.body);
         const {title, description, content} = req.body;
+        let imgPath = null;
+        if(req.file){
+            imgPath = req.file.filename;
+        }
         try{
             let user_id = req.session.user.id;
             const article = await blog.create({
@@ -48,11 +56,12 @@ async createArticle(req, res){
                 title,
                 description,
                 content,
+                image: imgPath
             });
             if(article){
-                res.status(200).render('pages/addBlog');
+                res.status(200).redirect('/');
             }else{
-                res.status(400).render('pages/addBlog');
+                res.status(400).redirect('/blogs/create');
     
             }
      
