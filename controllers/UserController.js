@@ -1,7 +1,7 @@
 const { User } = require("../models");
 const { Article } = require("../models");
 const { Comment } = require("../models");
-const bcrypt = require('bcrypt');
+const bcrypt = require('bcryptjs');
 const Joi = require('joi');  
 const ArticleContoller =require("./ArticleContoller");
 
