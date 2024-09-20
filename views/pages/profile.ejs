@@ -7,8 +7,8 @@
                   </button>
                   
                 <div class="card-body text-center">
-                    <img src="/uploads/<%= user.profilePicture %>" alt="Profile Picture"
-                        class="rounded-circle mb-3 profile-picture" />
+                    <img src="<%= user.profilePicture ? '/uploads/' + user.profilePicture : '/assets/img/profile_avatar.jpg' %>" 
+                    alt="Profile Picture" class="rounded-circle mb-3 profile-picture" />
                     <h1 class="display-4 mb-2"><%= user.username %></h1>
                     <p class="lead mb-4"><%= user.job%></p>
                     <div class="d-flex justify-content-center mb-4">
