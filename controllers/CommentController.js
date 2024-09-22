@@ -7,7 +7,7 @@ class CommentController {
         try {
             const { content, article_id } = req.body;
             const user_id = req.session.user.id;
-           
+            console.log(user_id);
                 const schema = Joi.object({
                     content: Joi.string().required(),
                     article_id: Joi.number().integer().required()
@@ -19,18 +19,27 @@ class CommentController {
                 }
     
                 // Check if article exists
-                const article = await Article.findByPk(article_id);
+                // const article = await Article.findByPk(article_id);
+                const article = await Article.findOne({where: { id: article_id}});
+               
                 if (!article) {
                     return res.status(404).json({ message: 'Article not found' });
                 }
-                console.log(article);
-    
+                if(article.user_id === user_id ){
+                    return res.status(400).json({message:'Author cant add comment on his articl'})
+                }
+
+                // res.render('blog',{
+                //     user_id:req.session.user.id,
+                // })
+               
                 // Create comment
                 const comment = await Comment.create({
                     content,
                     article_id,
                     user_id
                 });
+
 
                 const commentWithUser = await Comment.findOne({
                     where: { id: comment.id },
@@ -42,6 +51,8 @@ class CommentController {
                         }
                     ]
                 });
+
+                
     
                 res.status(201).json({
                     message: 'Comment created successfully',
