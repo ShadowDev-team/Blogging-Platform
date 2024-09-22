@@ -11,9 +11,9 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "bcryptjs": "^2.4.3",
     "@aws-sdk/client-bedrock-runtime": "^3.654.0",
     "bcrypt": "^5.1.1",
+    "bcryptjs": "^2.4.3",
     "body-parser": "^1.20.3",
     "dotenv": "^16.4.5",
     "ejs": "^3.1.10",
@@ -26,6 +26,7 @@
     "mysql2": "^3.11.2",
     "nodemailer": "^6.9.15",
     "sequelize": "^6.37.3",
-    "tinymce": "^7.3.0"
+    "tinymce": "^7.3.0",
+    "webpack": "^5.94.0"
   }
 }

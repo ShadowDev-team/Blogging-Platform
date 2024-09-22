@@ -39,7 +39,6 @@ async getBlogById(req, res){
     }
 }
 async createArticle(req, res){
-
     if(req.session.user){
         const {title, description, content} = req.body;
         let imgPath = null;
@@ -75,11 +74,6 @@ async createArticle(req, res){
 
   
 
-
-
-
-
-
 // function to fetch all articles of a user
 async getArticlesByUser(userId){
     
@@ -93,6 +87,7 @@ async getArticlesByUser(userId){
         console.error("Error fetching articles",error);
     }    
 }
+
 async deleteBlog(req,res){
     if(req.session.user){
         let id= req.body.id;
@@ -116,13 +111,15 @@ async deleteBlog(req,res){
 }
 async editBlog(req, res){
     if(req.session.user){
+        const APP_Host = process.env.APP_HOST || 'http://localhost:3000';
+
         let id = req.params.id;
         try{
             let article= await blog.findByPk(id);
             if(!article){
                 res.render('pages/404');
             }
-            res.render('pages/updateBlog', {article});
+            res.render('pages/updateBlog', {article, APP_Host});
         }catch(error){
             console.error('Error in edit blog methpd:'+ error);
         }
@@ -135,16 +132,23 @@ async editBlog(req, res){
 async updateBlog(req, res){
     if(req.session.user){
         let id = req.params.id;
+
         const {title, description, content} = req.body;
-    
+        console.log("Incoming Data:", { title, description, content });
+
         try{
             let article = await blog.findByPk(id);
             if(!article){
                 res.render('pages/404');
             }
+            let imgPath = article.image;
+            if(req.file){
+                imgPath = req.file.filename;
+            }
             article.title = title;
             article.description = description;
             article.content = content;
+            article.image= imgPath;
             await article.save();
             res.redirect('/profile');
     

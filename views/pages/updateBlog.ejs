@@ -13,15 +13,26 @@
         </div>
        <div>
 
-        <form class="form" id="form" action="/blogs/update/<%= article.id %>" method="POST">
-
+        <form class="form" id="form" action="/blogs/update/<%= article.id %>" enctype="multipart/form-data" method="POST">
+          <div>
             <label class="form-label" >Title</label>
-              <input type="text" value="<%= article.title%>" name="title" id="title" class="form-control"  />
+              <input id="title" type="text" value="<%= article.title%>" name="title"  class="form-control"  />
             </div>
-          
+
+            <div>
               <label class="form-label">Description</label>
-              <input type="text" name="description" value="<%= article.description%>" id="description" class="form-control" />
+              <input id="description" type="text" name="description" value="<%= article.description%>"  class="form-control" />
             </div>
+
+            <% if (article.image) { %>
+              <div class=" ">
+                  <label class="form-label d-block">Current Image</label>
+                  <img id="oldImg" src="/uploads/<%= article.image %>" alt="Current Article Image" style="max-width: 100%; height: auto;" />
+              </div>
+          <% } %>
+
+          <label class="form-label">Upload New Image</label>
+          <input type="file" name="image" id="image" class="form-control" />
 
 
             <label class="form-label" for="form6Example4">Content</label>
@@ -52,6 +63,58 @@
       }
 
   })
-  
+
 });
+  
+let oldImg = document.getElementById('oldImg');
+  let newimg = document.getElementById('image');
+  newimg.addEventListener('change', function(e){
+    if(oldImg !== null){
+      const file = event.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function (e) {
+              oldImg.src = e.target.result; 
+            }
+            reader.readAsDataURL(file); 
+        }
+
+    }
+
+  });
+
+
+
+  let form = document.getElementById("form");
+  form.addEventListener('submit', async function (e) {
+  e.preventDefault();
+  const title = document.getElementById("title");
+  const description = document.getElementById("description");
+  const content = tinymce.get("my-expressjs-tinymce-app").getContent();
+  const image = document.getElementById("image");
+  const formData = new FormData();
+  formData.append('title', title.value);
+  formData.append('description', description.value);
+  formData.append('content', content);
+  formData.append('image', image.files[0]);
+
+try{
+  const host = "<%= APP_Host %>";
+    const response = await fetch(`${host}/blogs/update/<%= article.id %>`, {
+        method: 'POST',
+        body: formData
+    }).then((res)=> {
+      console.log(formData);
+      if(res.ok){
+        window.location.href = '/';
+      }
+    })
+
+}catch(error){
+  console.error("smth wrong happend in adding blog", error);
+}
+});
+
+
+
 </script>

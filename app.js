@@ -28,6 +28,7 @@ app.use(session({
 
 app.use((req, res, next) => {
     res.locals.session = req.session;
+    res.locals.host = process.env.APP_HOST;
     next();
   });
 

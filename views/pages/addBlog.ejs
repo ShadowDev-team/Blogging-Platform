@@ -59,10 +59,12 @@ form.addEventListener('submit', async function (e) {
   formData.append('image', image.files[0]);
 
 try{
-  const response = await fetch("http://localhost:3000/createarticle", {
+  const host = "<%= APP_Host %>";
+    const response = await fetch(`${host}/createarticle`, {
         method: 'POST',
         body: formData
     }).then((res)=> {
+      console.log(formData);
       if(res.ok){
         window.location.href = '/';
       }
