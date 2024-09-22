@@ -132,3 +132,16 @@ Blogging-Platform/
 - `sequelize-cli`: The Sequelize Command Line Interface (CLI)
 - `tinymce`: A rich text editor for modern web applications
 
+## 6. CI/CD with GitHub Actions
+
+This project has CI/CD configured with GitHub Actions to deploy to AWS EC2 on each push to the dev branch. The workflow file is located at .github/workflows/deploy.yml.
+
+### Secrets
+
+```
+EC2_HOST: The hostname or IP address of your EC2 instance.
+EC2_USERNAME: The SSH username for your EC2 instance.
+EC2_SSH_KEY: The private SSH key for accessing your EC2 instance.
+```
+
+You can add these secrets in the "Settings" tab of your GitHub repository under "Secrets and variables" > "Actions".  This setup ensures that your application is automatically deployed whenever you push changes to the dev branch.
