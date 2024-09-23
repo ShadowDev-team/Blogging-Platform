@@ -4,21 +4,24 @@ const authenticate = require("../controllers/AuthController");
 const UserController = require("../controllers/UserController");
 const upload = require("../services/multerService.js");
 const articleController = require('../controllers/ArticleContoller');
+require("dotenv").config();
+
 
 
 //home page and blog routes
 router.get('/blogs/create',(req, res)=>{
-    res.render('pages/addBlog');
+    const APP_Host = process.env.APP_HOST || 'http://localhost:3000';
+    res.render('pages/addBlog', {APP_Host});
 })
+router.post("/createarticle",upload.single("image"), articleController.createArticle);
+
 router.get('/', articleController.getAllArticles);
 router.get('/blog/:id', articleController.getBlogById);
-// router.post('/createarticle', articleController.createArticle);
-router.post("/createarticle",upload.single("image"), articleController.createArticle);
 
 
 router.post('/blogs/delete', articleController.deleteBlog);
 router.get('/blogs/edit/:id', articleController.editBlog)
-router.post('/blogs/update/:id', articleController.updateBlog)
+router.post('/blogs/update/:id', upload.single('image'), articleController.updateBlog);
 
 
  // profile routes

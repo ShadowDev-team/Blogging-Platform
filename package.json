@@ -26,6 +26,7 @@
     "mysql2": "^3.11.2",
     "nodemailer": "^6.9.15",
     "sequelize": "^6.37.3",
-    "tinymce": "^7.3.0"
+    "tinymce": "^7.3.0",
+    "webpack": "^5.94.0"
   }
 }
