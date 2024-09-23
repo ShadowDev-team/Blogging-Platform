@@ -1,4 +1,4 @@
-# Project Name
+# Blogging Platform
 
 ## 1. Introduction
 
