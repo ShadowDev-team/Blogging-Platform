@@ -48,7 +48,7 @@
         </div>
         <div class="comment-template">
             <h4 class="template-title"><span id="comment-count"></span> Commentaire</h4>
-            <!-- Comments Section -->
+
             <div class="comments-section">
                 <div id="comments-container">
                   
@@ -70,7 +70,7 @@
 
         
         
-        <!-- Script to fetch and display comments -->
+
         <script>
             document.addEventListener('DOMContentLoaded', function () {
                 const articleId = window.location.pathname.split('/').pop();
@@ -80,16 +80,16 @@
                 const toggleCommentsButton = document.getElementById('toggle-comments');
         
                 let comments = [];
-                let isExpanded = false; // Track the state of comments visibility
+                let isExpanded = false; 
         
-                // Fetch comments for the article
+      
                 function fetchComments() {
                     fetch(`/api/articles/${articleId}/comments`)
                         .then(response => response.json())
                         .then(fetchedComments => {
-                            comments = fetchedComments; // Store fetched comments
-                            displayComments(); // Initially display limited comments
-                            commentCountElement.textContent = comments.length; // Update comment count
+                            comments = fetchedComments;
+                            displayComments();
+                            commentCountElement.textContent = comments.length; 
                         })
                         .catch(error => {
                             console.error('Error fetching comments:', error);
@@ -97,10 +97,10 @@
                         });
                 }
         
-                // Display limited or all comments based on isExpanded state
+            
                 function displayComments() {
-                    commentsContainer.innerHTML = ''; // Clear previous comments
-                    const commentsToShow = isExpanded ? comments : comments.slice(0, 3); // Show all or just 3
+                    commentsContainer.innerHTML = '';
+                    const commentsToShow = isExpanded ? comments : comments.slice(0, 3); 
         
                     if (commentsToShow.length === 0) {
                         commentsContainer.innerHTML = '<p>No comments yet.</p>';
@@ -109,7 +109,7 @@
                             const commentElement = document.createElement('div');
                             commentElement.classList.add('comment');
                             commentElement.innerHTML = `
-                                <p><strong>${comment.author ? comment.author.username : 'Anonymous'}:</strong> ${comment.content}</p>
+                                <p><strong>${comment.author ? comment.author.username : 'unknown'}:</strong> ${comment.content}</p>
                                 <p><small>${new Date(comment.createdAt).toLocaleString()}</small></p>
                                 <hr>
                             `;
@@ -117,61 +117,53 @@
                         });
                     }
         
-                    // Update button text based on whether comments are expanded or collapsed
+       
                     toggleCommentsButton.textContent = isExpanded ? 'Read Less' : 'Read More';
-                    toggleCommentsButton.style.display = comments.length > 3 ? 'inline-block' : 'none'; // Hide button if fewer than 4 comments
+                    toggleCommentsButton.style.display = comments.length > 3 ? 'inline-block' : 'none'; 
                 }
         
-                // Handle comment form submission
-                commentForm.addEventListener('submit', function (event) {
-                    event.preventDefault();
-                    const content = document.getElementById('comment-content').value;
-        
-                    // Send the new comment to the backend
-                    fetch(`/api/comments`, {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json'
-                        },
-                        body: JSON.stringify({
-                            content: content,
-                            article_id: articleId
-                        })
-                    })
-                        .then(response => response.json())
-                        .then(data => {
+   
+                commentForm.addEventListener('submit', async function (event) {
+    event.preventDefault();
+    const content = document.getElementById('comment-content').value;
 
-                            if (data.message === 'Comment created successfully') {
-                                
-                                // Push the new comment into the comments array
-                                comments.push({
-                                    author: { username: data.comment.author.username}, // Replace with the actual current user's username
-                                    content: data.comment.content,
-                                    createdAt: data.comment.createdAt
-                                });
-        
-                                displayComments(); // Re-render the comments
-                                document.getElementById('comment-content').value = ''; // Clear input field
-                                commentCountElement.textContent = comments.length; // Update the comment count
-                            }
+    try {
+        const response = await fetch(`/api/comments`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                content: content,
+                article_id: articleId
+            })
+        });
+        const data = await response.json();
 
-                            else 
-                            {
-                                window.location.href="/login";
-                            }
-                        })
-                        .catch(error => {
-                            console.error('Error submitting comment:', error);
-                        });
+            if (response.status === 201) {
+                comments.push({
+                    author: { username: data.comment.author.username },
+                    content: data.comment.content,
+                    createdAt: data.comment.createdAt
                 });
-        
-                // Toggle comments visibility on button click
-                toggleCommentsButton.addEventListener('click', function () {
-                    isExpanded = !isExpanded; // Toggle the state
-                    displayComments(); // Refresh comments based on new state
+
+                displayComments();
+                document.getElementById('comment-content').value = ''; 
+                commentCountElement.textContent = comments.length; 
+            } else if (response.status === 400) {
+                alert(data.message);
+            } else {
+                window.location.href = "/login";
+            }
+            } catch (error) {
+                console.error('Error submitting comment:', error);
+            }
+        });
+    
+            toggleCommentsButton.addEventListener('click', function () {
+                    isExpanded = !isExpanded; 
+                    displayComments(); 
                 });
-        
-                // Fetch and display comments when the page loads
                 fetchComments();
             });
         </script>
