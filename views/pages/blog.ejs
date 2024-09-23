@@ -51,14 +51,14 @@
             <!-- Comments Section -->
             <div class="comments-section">
                 <div id="comments-container">
-                    <!-- Comments will be appended here by JavaScript -->
+                  
                 </div>
                 <p class="d-inline-flex gap-1">
                     <h1 id="toggle-comments" class="btn mb-4"></h1>
                 </p>
             </div>
         
-            <!-- New comment form -->
+          
             <div class="comment-form">
                 <h3>Laisser un commentaire</h3>
                 <form id="comment-form">
@@ -67,6 +67,8 @@
                 </form>
             </div>
         </div>
+
+        
         
         <!-- Script to fetch and display comments -->
         <script>
@@ -138,18 +140,23 @@
                     })
                         .then(response => response.json())
                         .then(data => {
+
                             if (data.message === 'Comment created successfully') {
+                                
                                 // Push the new comment into the comments array
                                 comments.push({
-                                    author: { username: 'current_user' }, // Replace with the actual current user's username
-                                    content: content,
-                                    createdAt: new Date().toISOString()
+                                    author: { username: data.comment.author.username}, // Replace with the actual current user's username
+                                    content: data.comment.content,
+                                    createdAt: data.comment.createdAt
                                 });
         
                                 displayComments(); // Re-render the comments
                                 document.getElementById('comment-content').value = ''; // Clear input field
                                 commentCountElement.textContent = comments.length; // Update the comment count
-                            } else {
+                            }
+
+                            else 
+                            {
                                 window.location.href="/login";
                             }
                         })
