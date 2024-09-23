@@ -107,8 +107,7 @@ Blogging-Platform/
 - Article Management
    - Create new articles
    - View all articles
-   - View articles by ID
-   - View articles by user
+   - View article by ID
    - Edit articles
    - Delete articles
  - Comment Management
